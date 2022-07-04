@@ -37,9 +37,12 @@ tags:
     description: User data management
   - name: Event
     description: Event data management
-  - name: Event Participation
+  - name: Participation
     description: Participation data management
 paths:
+  ###########################
+  #          LOGIN          #
+  ###########################
   /login:
     post:
       tags:
@@ -52,12 +55,9 @@ paths:
             # schema:
             # $ref: "#component/schemas/requestLogin"
             examples:
-              userData1:
-                description: "Data user 1"
+              userData:
+                description: "Data user"
                 value: { email: "alta@alterra.id", password: "inipassword" }
-              userData2:
-                description: "Data user 2"
-                value: { email: "alta2@alterra.id", password: "inipassword2" }
                 # type: object
                 # properties:
                 #   email:
@@ -74,8 +74,8 @@ paths:
               # schema:
               # $ref: "#/components/schemas/responseLoginSuccess"
               examples:
-                responseData1:
-                  description: response success 1
+                responseData:
+                  description: response success
                   value:
                     {
                       code: 200,
@@ -87,35 +87,20 @@ paths:
                           token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
                         },
                     }
-                responseData2:
-                  description: response success 2
-                  value:
-                    {
-                      code: 200,
-                      status: "Success",
-                      message: "Login Success",
-                      data:
-                        {
-                          id: 1,
-                          token: "eyJhbGciOiJIUzI1asdnjnR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
-                        },
-                    }
         "400":
-          description: Login Failed
+          description: "Login Failed"
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/failedResponse"
+              # $ref: "#/components/schemas/failedResponseLogin"
               examples:
-                responseData1:
-                  description: response failed 1
+                responseData:
+                  description: response failed
                   value:
                     { code: 400, status: "failed", message: "Login Failed" }
-                responseData2:
-                  description: response failed 2
-                  value:
-                    { code: 400, status: "failed", message: "Login Failed" }
-
+  ##############################
+  #          REGISTER          #
+  ##############################
   /register:
     post:
       tags:
@@ -126,23 +111,15 @@ paths:
         content:
           application/json:
             # schema:
-            # $ref: "#component/schemas/requestLogin"
+            # $ref: "#component/schemas/requestRegister"
             examples:
-              userData1:
-                description: "Data user 1"
+              userData:
+                description: "Data user"
                 value:
                   {
                     name: Budi Setiawan,
                     email: budi@gmail.com,
                     password: inibudi,
-                  }
-              userData2:
-                description: "Data user 2"
-                value:
-                  {
-                    name: Andi Perkasa,
-                    email: andi@gmail.com,
-                    password: iniandi,
                   }
                 # type: object
                 # properties:
@@ -154,22 +131,14 @@ paths:
                 #     examples: inipassword
       responses:
         "200":
-          description: "Login Success"
+          description: "Register Success"
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/responseLoginSuccess"
+              # $ref: "#/components/schemas/responseRegisterSuccess"
               examples:
-                responseData1:
-                  description: response success 1
-                  value:
-                    {
-                      code: 200,
-                      status: "Success",
-                      message: "Register Success",
-                    }
-                responseData2:
-                  description: response success 2
+                responseData:
+                  description: response success
                   value:
                     {
                       code: 200,
@@ -177,29 +146,23 @@ paths:
                       message: "Register Success",
                     }
         "400":
-          description: Register Failed
+          description: "Register Failed"
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/failedResponse"
+              # $ref: "#/components/schemas/failedResponseRegister"
               examples:
-                responseData1:
-                  description: response failed 1
+                responseData:
+                  description: response failed
                   value:
                     {
                       code: 400,
                       status: "failed",
                       message: "All input data must be filled",
                     }
-                responseData2:
-                  description: response failed 2
-                  value:
-                    {
-                      code: 400,
-                      status: "failed",
-                      message: "Email already registered",
-                    }
-
+  ##########################
+  #          USER          #
+  ##########################
   /users:
     get:
       tags:
@@ -212,10 +175,10 @@ paths:
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/responseLoginSuccess"
+              # $ref: "#/components/schemas/responseOneUserSuccess"
               examples:
-                responseData1:
-                  description: response success 1
+                responseData:
+                  description: response success
                   value:
                     {
                       code: 200,
@@ -229,38 +192,15 @@ paths:
                           email: "budi@gmail.com",
                         },
                     }
-                responseData2:
-                  description: response success 2
-                  value:
-                    {
-                      code: 200,
-                      status: "Success",
-                      message: "Success get your data",
-                      data:
-                        {
-                          ID: 2,
-                          avatar: URL File,
-                          name: "andi",
-                          email: "andi@gmail.com",
-                        },
-                    }
         "400":
-          description: Login Failed
+          description: "Failed Get Profile"
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/failedResponse"
+              # $ref: "#/components/schemas/failedResponseOneUserSuccess"
               examples:
-                responseData1:
-                  description: response failed 1
-                  value:
-                    {
-                      code: 400,
-                      status: "failed",
-                      message: "Failed to get your data",
-                    }
-                responseData2:
-                  description: response failed 2
+                responseData:
+                  description: response failed
                   value:
                     {
                       code: 400,
@@ -279,21 +219,13 @@ paths:
             # schema:
             # $ref: "#component/schemas/requestUpdateUser"
             examples:
-              userData1:
-                description: "Data user 1"
+              userData:
+                description: "Data user"
                 value:
                   {
                     name: Angga pramaja,
                     email: angga@gmail.com,
                     password: ituangga,
-                  }
-              userData2:
-                description: "Data user 2"
-                value:
-                  {
-                    name: Bagas Setiawan,
-                    email: bagas@gmail.com,
-                    password: itubagas,
                   }
                 # type: object
                 # properties:
@@ -311,27 +243,19 @@ paths:
               # schema:
               # $ref: "#/components/schemas/responseUpdatedUser"
               examples:
-                responseData1:
-                  description: response success 1
-                  value:
-                    { code: 200, status: "Success", message: "Update Success" }
-                responseData2:
-                  description: response success 2
+                responseData:
+                  description: response success
                   value:
                     { code: 200, status: "Success", message: "Update Success" }
         "400":
-          description: Failed Updated
+          description: "Failed Updated"
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/failedResponse"
+              # $ref: "#/components/schemas/failedResponseUpdatedUser"
               examples:
-                responseData1:
-                  description: response failed 1
-                  value:
-                    { code: 400, status: "failed", message: "Failed Update" }
-                responseData2:
-                  description: response failed 2
+                responseData:
+                  description: response failed
                   value:
                     { code: 400, status: "failed", message: "Failed Update" }
     delete:
@@ -345,14 +269,10 @@ paths:
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/responseDeleteSuccess"
+              # $ref: "#/components/schemas/responseDeleteUserSuccess"
               examples:
-                responseData1:
-                  description: response success 1
-                  value:
-                    { code: 200, status: "Success", message: "Delete Success" }
-                responseData2:
-                  description: response success 2
+                responseData:
+                  description: response success
                   value:
                     { code: 200, status: "Success", message: "Delete Success" }
         "400":
@@ -360,13 +280,258 @@ paths:
           content:
             application/json:
               # schema:
-              # $ref: "#/components/schemas/failedResponseDelete"
+              # $ref: "#/components/schemas/failedResponseDeleteUser"
               examples:
-                responseData1:
-                  description: response failed 1
+                responseData:
+                  description: response failed
                   value:
                     { code: 400, status: "failed", message: "Failed deleted" }
-                responseData2:
-                  description: response failed 2
+  ############################
+  #          EVENTS          #
+  ############################
+  /events:
+    post:
+      tags:
+        - Event
+      summary: create events
+      description: Create events description
+      requestBody:
+        content:
+          application/json:
+            # schema:
+            # $ref: "#component/schemas/requestInsertEvent"
+            examples:
+              eventData:
+                description: "Create event description by user"
+                value:
+                  {
+                    photo_events: URL,
+                    name: Webinar Pendidikan,
+                    hosted_by: Company Surya Kencana,
+                    date: 20-07-2022,
+                    city: Jakarta,
+                    location: (longitude and latitude),
+                    details: Ini adalah description webinar bertema pendidikan,
+                  }
+                # type: object
+                # properties:
+                #   email:
+                #     type: string
+                #     examples: alta@mail.com
+                #   password:
+                #     type: string
+                #     examples: inipassword
+      responses:
+        "200":
+          description: "Success to create event"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseInsertEvent"
+              examples:
+                responseData:
+                  description: response success
                   value:
-                    { code: 400, status: "failed", message: "Failed deleted" }
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success insert event",
+                    }
+        "400":
+          description: "Failed to create event"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedResponseInsertEvent"
+              examples:
+                responseData:
+                  description: response failed
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed insert event",
+                    }
+    get:
+      tags:
+        - Event
+      summary: get all events
+      description: Home description
+      responses:
+        "200":
+          description: "Get all events success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseHomeSuccess"
+              examples:
+                responseHome:
+                  description: response home success
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success get all events",
+                      data:
+                        [
+                          {
+                            photo_events: URL,
+                            name: Webinar Pendidikan,
+                            hosted_by: Company Surya Kencana,
+                            date: 20-07-2022,
+                            city: Jakarta,
+                            location: (longitude and latitude),
+                            details: Ini adalah description webinar bertema pendidikan,
+                          }
+                        ],
+                    }
+        "400":
+          description: "Failed to get all events"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/faileResponseHomeSuccess"
+              examples:
+                responseData:
+                  description: response home failed
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed get all events",
+                    }
+  /events/{id_event}:
+    get:
+      tags:
+        - Event
+      summary: get event
+      description: Show one event
+      responses:
+        "200":
+          description: "Get events success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseOneEventSuccess"
+              examples:
+                responseData:
+                  description: response event success
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success get event",
+                      data:
+                        {
+                          photo_events: URL,
+                          name: Webinar Pendidikan,
+                          hosted_by: Company Surya Kencana,
+                          date: 20-07-2022,
+                          city: Jakarta,
+                          location: (longitude and latitude),
+                          details: Ini adalah description webinar bertema pendidikan,
+                        },
+                    }
+        "400":
+          description: "Failed to get events"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedOneEventSuccess"
+              examples:
+                responseData:
+                  description: response event failed
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed to get event",
+                    }
+    put:
+      tags:
+        - Event
+      summary: update event
+      description: Updated event description
+      requestBody:
+        content:
+          application/json:
+            # schema:
+            # $ref: "#component/schemas/requestUpdateEvent"
+            examples:
+              eventData:
+                description: "Update event Description by user"
+                value:
+                  {
+                    photo_events: URL,
+                    name: Webinar Pendidikan,
+                    hosted_by: Company Surya Kencana,
+                    date: 20-07-2022,
+                    city: Jakarta,
+                    location: (longitude and latitude),
+                    details: Ini adalah description webinar bertema pendidikan,
+                  }
+                # type: object
+                # properties:
+                #   email:
+                #     type: string
+                #     examples: alta@mail.com
+                #   password:
+                #     type: string
+                #     examples: inipassword
+      responses:
+        "200":
+          description: "Update Success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseUpdateEvent"
+              examples:
+                responseData:
+                  description: response success
+                  value:
+                    { code: 200, status: "Success", message: "Success update event" }
+        "400":
+          description: "Failed Updated"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedResponseUpdateEvent"
+              examples:
+                responseData:
+                  description: response failed
+                  value:
+                    { code: 400, status: "failed", message: "Failed update event" }
+    delete:
+      tags:
+        - Event
+      summary: delete event
+      description: Delete event description
+      responses:
+        "200":
+          description: Delete Success
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseDeleteEventSuccess"
+              examples:
+                responseData:
+                  description: response success
+                  value:
+                    { code: 200, status: "Success", message: "Delete event success" }
+        "400":
+          description: Failed Deleted
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedResponseDeleteEvent"
+              examples:
+                responseData:
+                  description: response failed
+                  value:
+                    { code: 400, status: "failed", message: "Failed event deleted" }
+
+  ###################################
+  #          PARTICIPATION          #
+  ###################################
+  
+
