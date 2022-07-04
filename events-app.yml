@@ -1,0 +1,203 @@
+openapi: "3.0.2"
+info: # Belum ditentukan data info dan servers
+  title: Events App
+  description: description Events App
+  termsOfService: https://academy.alterra.id
+  contact:
+    name: API Support
+    url: https://www.alterra.id/support
+    email: support@alterra.id
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1.0"
+externalDocs:
+  description: alterra external docs API
+  url: https://alterra.id
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/fazamttqn/EventsApp/1.0.0
+  - url: https://{environment}.api.alterra.id/v1
+    description: ALTA API server
+    variables:
+      environment:
+        default: dev
+        enum:
+          - dev
+          - staging
+          - production
+  - url: http://13.215.249.83:80
+    description: ALTA API server
+tags:
+  - name: Login
+    description: User Authentication
+  - name: Register
+    description: Register User
+  - name: User
+    description: User data management
+  - name: Event
+    description: Event data management
+  - name: Event Participation
+    description: Participation data management
+paths:
+  /login:
+    post:
+      tags:
+        - Login
+      summary: login user
+      description: Login user description
+      requestBody:
+        content:
+          application/json:
+            # schema:
+            # $ref: "#component/schemas/requestLogin"
+            examples:
+              userData1:
+                description: "Data user 1"
+                value: { email: "alta@alterra.id", password: "inipassword" }
+              userData2:
+                description: "Data user 2"
+                value: { email: "alta2@alterra.id", password: "inipassword2" }
+                # type: object
+                # properties:
+                #   email:
+                #     type: string
+                #     examples: alta@mail.com
+                #   password:
+                #     type: string
+                #     examples: inipassword
+      responses:
+        "200":
+          description: "Login Success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseLoginSuccess"
+              examples:
+                responseData1:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Login Success",
+                      data:
+                        {
+                          id: 1,
+                          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                        },
+                    }
+                responseData2:
+                  description: response success 2
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Login Success",
+                      data:
+                        {
+                          id: 1,
+                          token: "eyJhbGciOiJIUzI1asdnjnR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                        },
+                    }
+        "400":
+          description: Login Failed
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    { code: 400, status: "failed", message: "Login Failed" }
+                responseData2:
+                  description: response failed 2
+                  value:
+                    { code: 400, status: "failed", message: "Login Failed" }
+
+  /register:
+    post:
+      tags:
+        - Register
+      summary: Register user
+      description: Register user description
+      requestBody:
+        content:
+          application/json:
+            # schema:
+            # $ref: "#component/schemas/requestLogin"
+            examples:
+              userData1:
+                description: "Data user 1"
+                value:
+                  {
+                    name: Budi Setiawan,
+                    email: budi@gmail.com,
+                    password: inibudi,
+                  }
+              userData2:
+                description: "Data user 2"
+                value:
+                  {
+                    name: Andi Perkasa,
+                    email: andi@gmail.com,
+                    password: iniandi,
+                  }
+                # type: object
+                # properties:
+                #   email:
+                #     type: string
+                #     examples: alta@mail.com
+                #   password:
+                #     type: string
+                #     examples: inipassword
+      responses:
+        "200":
+          description: "Login Success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseLoginSuccess"
+              examples:
+                responseData1:
+                  description: response success 1
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Register Success",
+                    }
+                responseData2:
+                  description: response success 2
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Register Success",
+                    }
+        "400":
+          description: Register Failed
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "All input data must be filled",
+                    }
+                responseData2:
+                  description: response failed 2
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Email already registered",
+                    }
+
+    
