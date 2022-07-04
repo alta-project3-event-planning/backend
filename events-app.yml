@@ -84,7 +84,7 @@ paths:
                       data:
                         {
                           id: 1,
-                          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co,
                         },
                     }
         "400":
@@ -188,8 +188,8 @@ paths:
                         {
                           ID: 1,
                           avatar: URL File,
-                          name: "budi",
-                          email: "budi@gmail.com",
+                          name: budi,
+                          email: budi@gmail.com,
                         },
                     }
         "400":
@@ -382,7 +382,7 @@ paths:
                             city: Jakarta,
                             location: (longitude and latitude),
                             details: Ini adalah description webinar bertema pendidikan,
-                          }
+                          },
                         ],
                     }
         "400":
@@ -489,7 +489,11 @@ paths:
                 responseData:
                   description: response success
                   value:
-                    { code: 200, status: "Success", message: "Success update event" }
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success update event",
+                    }
         "400":
           description: "Failed Updated"
           content:
@@ -500,7 +504,11 @@ paths:
                 responseData:
                   description: response failed
                   value:
-                    { code: 400, status: "failed", message: "Failed update event" }
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed update event",
+                    }
     delete:
       tags:
         - Event
@@ -517,7 +525,11 @@ paths:
                 responseData:
                   description: response success
                   value:
-                    { code: 200, status: "Success", message: "Delete event success" }
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Delete event success",
+                    }
         "400":
           description: Failed Deleted
           content:
@@ -528,10 +540,216 @@ paths:
                 responseData:
                   description: response failed
                   value:
-                    { code: 400, status: "failed", message: "Failed event deleted" }
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed event deleted",
+                    }
 
   ###################################
   #          PARTICIPATION          #
   ###################################
-  
-
+  /events/participations:
+    # Join event yang akan diikuti oleh user
+    post:
+      tags:
+        - Participation
+      summary: join event
+      description: Join event description
+      requestBody:
+        content:
+          application/json:
+            # schema:
+            # $ref: "#component/schemas/requestJoin"
+            examples:
+              joinData:
+                description: "Data join"
+                value: { id_event: 2 }
+                # type: object
+                # properties:
+                #   email:
+                #     type: string
+                #     examples: alta@mail.com
+                #   password:
+                #     type: string
+                #     examples: inipassword
+      responses:
+        "200":
+          description: "Join Success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseJoinSuccess"
+              examples:
+                responseData:
+                  description: response success
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success insert event participation",
+                    }
+        "400":
+          description: "Failed Join"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedResponseJoin"
+              examples:
+                responseData:
+                  description: response failed
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed insert event participation",
+                    }
+    # Mengambil data event yang diikuti oleh user
+    get:
+      tags:
+        - Participation
+      summary: get all event by participation
+      description: Participation Event description
+      responses:
+        "200":
+          description: "Get all events participation success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseParticipationSuccess"
+              examples:
+                responseJoin:
+                  description: response event participation success
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success get all your events",
+                      data:
+                        [
+                          {
+                            photo_events: URL,
+                            name: Webinar Pendidikan,
+                            hosted_by: Company Surya Kencana,
+                            date: 20-07-2022,
+                            city: Jakarta,
+                            location: (longitude and latitude),
+                            details: Ini adalah description webinar bertema pendidikan,
+                          },
+                        ],
+                    }
+        "400":
+          description: "Failed to get all events"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/faileResponseParticipationSuccess"
+              examples:
+                responseJoin:
+                  description: failed response event participation success
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed get all your events",
+                    }
+  #############################
+  #          COMMENT          #
+  #############################
+  # Comment yang dibuat oleh user
+  /events/comments:
+    post:
+      tags:
+        - Participation
+      summary: comment event
+      description: Create comment event description
+      requestBody:
+        content:
+          application/json:
+            # schema:
+            # $ref: "#component/schemas/requesCreateComment"
+            examples:
+              commentData:
+                description: "Data comment"
+                value:
+                  {
+                    id_event: 2,
+                    id_user: 24,
+                    comment: Ini spesifik alamat eventnya dimana gimana ya kak?,
+                  }
+      responses:
+        "200":
+          description: "Comment Success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseCreateCommentSuccess"
+              examples:
+                responseData:
+                  description: response comment success
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success insert your comment",
+                    }
+        "400":
+          description: "Failed Comment"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/failedResponseCreateComment"
+              examples:
+                responseData:
+                  description: failed response comment
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed insert your comment",
+                    }
+  # Mengambil semua data comment yang terkait dengan event
+  /events/comments/{id_event}:
+    get:
+      tags:
+        - Participation
+      summary: get all comment event
+      description: Comment event description
+      responses:
+        "200":
+          description: "Get all comment events success"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/responseCommentSuccess"
+              examples:
+                responseComment:
+                  description: response comment event success
+                  value:
+                    {
+                      code: 200,
+                      status: "Success",
+                      message: "Success get all comment events",
+                      data:
+                        [
+                          {
+                            name: Angga,
+                            comment: Ini spesifik alamat eventnya dimana gimana ya kak?,
+                          },
+                        ],
+                    }
+        "400":
+          description: "Failed to get all comment events"
+          content:
+            application/json:
+              # schema:
+              # $ref: "#/components/schemas/faileResponseCommentSuccess"
+              examples:
+                responseComment:
+                  description: failed response comment event success
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "Failed get all comment events",
+                    }
