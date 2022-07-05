@@ -70,6 +70,10 @@ func (uc *userUseCase) UpdateData(userReq users.Core, id int) (row int, err erro
 		updateMap["password"] = &hash
 	}
 
+	if userReq.URL != "" {
+		updateMap["url"] = &userReq.URL
+	}
+
 	result, err := uc.userData.UpdateData(updateMap, id)
 	if err != nil {
 		return 0, errors.New("no data user for updated")

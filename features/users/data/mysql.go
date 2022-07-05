@@ -2,6 +2,8 @@ package data
 
 import (
 	"errors"
+	"fmt"
+	// "fmt"
 	"project3/eventapp/features/users"
 
 	"gorm.io/gorm"
@@ -59,6 +61,7 @@ func (repo *mysqlUserRepository) DeleteData(id int) (row int, err error) {
 func (repo *mysqlUserRepository) UpdateData(dataReq map[string]interface{}, id int) (row int, err error) {
 	model := User{}
 	model.ID = uint(id)
+	fmt.Println(dataReq["url"])
 	result := repo.db.Model(model).Updates(dataReq)
 	if result.Error != nil {
 		return 0, result.Error
