@@ -1,7 +1,7 @@
 package migration
 
 import (
-	_mProduct "project3/eventapp/features/products/data"
+	_mEvent "project3/eventapp/features/events/data"
 	_mUser "project3/eventapp/features/users/data"
 
 	"gorm.io/gorm"
@@ -9,5 +9,5 @@ import (
 
 func Migration(db *gorm.DB) {
 	db.AutoMigrate(_mUser.User{})
-	db.AutoMigrate(_mProduct.Product{})
+	db.AutoMigrate(_mEvent.Event{})
 }

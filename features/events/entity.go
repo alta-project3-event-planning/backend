@@ -1,4 +1,4 @@
-package products
+package events
 
 import (
 	"time"
@@ -7,8 +7,8 @@ import (
 type Core struct {
 	ID            int
 	Name          string
-	ProductName   string
-	ProductDetail string
+	EventName   string
+	EventDetail string
 	Stock         int
 	Price         int
 	Photo         string
@@ -26,12 +26,12 @@ type User struct {
 }
 
 type Business interface {
-	GetAllProduct() (data []Core, err error)
-	GetProductByID(param int) (data Core, err error)
-	InsertProduct(dataReq Core) (err error)
-	DeleteProductByID(id int, userId int) (err error)
-	UpdateProductByID(dataReq Core, id int, userId int) (err error)
-	GetProductByUserID(id_user int) (data []Core, err error)
+	GetAllEvent() (data []Core, err error)
+	GetEventByID(param int) (data Core, err error)
+	InsertEvent(dataReq Core) (err error)
+	DeleteEventByID(id int, userId int) (err error)
+	UpdateEventByID(dataReq Core, id int, userId int) (err error)
+	GetEventByUserID(id_user int) (data []Core, err error)
 }
 
 type Data interface {

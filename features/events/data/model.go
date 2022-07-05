@@ -1,12 +1,12 @@
 package data
 
 import (
-	"project3/eventapp/features/products"
+	"project3/eventapp/features/events"
 
 	"gorm.io/gorm"
 )
 
-type Product struct {
+type Event struct {
 	gorm.Model
 	Name   string `json:"name" form:"name"`
 	Detail string `json:"detail" form:"detail"`
@@ -23,22 +23,22 @@ type User struct {
 	Name     string `json:"name" form:"name"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
-	Product  []Product
+	Event  []Event
 }
 
 //DTO
 
-func (data *Product) toCore() products.Core {
-	return products.Core{
+func (data *Event) toCore() events.Core {
+	return events.Core{
 		ID:            int(data.ID),
 		Name:          data.Name,
-		ProductDetail: data.Detail,
+		EventDetail: data.Detail,
 		Photo:         data.Photo,
 		PhotoUrl:      data.URL,
 		Stock:         data.Stock,
 		Price:         data.Price,
 		UserID:        data.UserID,
-		User: products.User{
+		User: events.User{
 			ID:    int(data.User.ID),
 			Name:  data.User.Name,
 			Email: data.User.Email,
@@ -46,18 +46,18 @@ func (data *Product) toCore() products.Core {
 	}
 }
 
-func ToCoreList(data []Product) []products.Core {
-	result := []products.Core{}
+func ToCoreList(data []Event) []events.Core {
+	result := []events.Core{}
 	for key := range data {
 		result = append(result, data[key].toCore())
 	}
 	return result
 }
 
-func fromCore(core products.Core) Product {
-	return Product{
+func fromCore(core events.Core) Event {
+	return Event{
 		Name:   core.Name,
-		Detail: core.ProductDetail,
+		Detail: core.EventDetail,
 		Photo:  core.Photo,
 		URL:    core.PhotoUrl,
 		Stock:  core.Stock,
@@ -70,6 +70,6 @@ func fromCore(core products.Core) Product {
 	}
 }
 
-func toCore(data Product) products.Core {
+func toCore(data Event) events.Core {
 	return data.toCore()
 }

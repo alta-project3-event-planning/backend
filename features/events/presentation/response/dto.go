@@ -1,10 +1,10 @@
 package response
 
 import (
-	"project3/eventapp/features/products"
+	"project3/eventapp/features/events"
 )
 
-type Product struct {
+type Event struct {
 	ID     int    `json:"id" form:"id"`
 	Name   string `json:"name" form:"name"`
 	Detail string `json:"detail" form:"detail"`
@@ -15,11 +15,11 @@ type Product struct {
 	UserID int    `json:"userid" form:"userid"`
 }
 
-func FromCore(data products.Core) Product {
-	return Product{
+func FromCore(data events.Core) Event {
+	return Event{
 		ID:     data.ID,
 		Name:   data.Name,
-		Detail: data.ProductDetail,
+		Detail: data.EventDetail,
 		Photo:  data.Photo,
 		URL:    data.PhotoUrl,
 		Stock:  data.Stock,
@@ -28,8 +28,8 @@ func FromCore(data products.Core) Product {
 	}
 }
 
-func FromCoreList(data []products.Core) []Product {
-	result := []Product{}
+func FromCoreList(data []events.Core) []Event {
+	result := []Event{}
 	for key := range data {
 		result = append(result, FromCore(data[key]))
 	}

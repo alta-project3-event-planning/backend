@@ -9,9 +9,9 @@ import (
 	_authData "project3/eventapp/features/auth/data"
 	_authPresentation "project3/eventapp/features/auth/presentation"
 
-	_productBusiness "project3/eventapp/features/products/bussiness"
-	_productData "project3/eventapp/features/products/data"
-	_productPresentation "project3/eventapp/features/products/presentation"
+	_eventBusiness "project3/eventapp/features/events/bussiness"
+	_eventData "project3/eventapp/features/events/data"
+	_eventPresentation "project3/eventapp/features/events/presentation"
 
 	"gorm.io/gorm"
 )
@@ -19,7 +19,7 @@ import (
 type Presenter struct {
 	UserPresenter    *_userPresentation.UserHandler
 	AuthPresenter    *_authPresentation.AuthHandler
-	ProductPresenter *_productPresentation.ProductHandler
+	EventPresenter *_eventPresentation.EventHandler
 }
 
 func InitFactory(dbConn *gorm.DB) Presenter {
@@ -32,13 +32,13 @@ func InitFactory(dbConn *gorm.DB) Presenter {
 	authBusiness := _authBusiness.NewAuthBusiness(authData)
 	authPresentation := _authPresentation.NewAuthHandler(authBusiness)
 
-	productData := _productData.NewProductRepository(dbConn)
-	productBusiness := _productBusiness.NewProductBusiness(productData)
-	productPresentation := _productPresentation.NewProductHandler(productBusiness)
+	eventData := _eventData.NewEventRepository(dbConn)
+	eventBusiness := _eventBusiness.NewEventBusiness(eventData)
+	eventPresentation := _eventPresentation.NewEventHandler(eventBusiness)
 
 	return Presenter{
 		UserPresenter:    userPresentation,
 		AuthPresenter:    authPresentation,
-		ProductPresenter: productPresentation,
+		EventPresenter: eventPresentation,
 	}
 }

@@ -1,33 +1,20 @@
 openapi: "3.0.2"
 info: # Belum ditentukan data info dan servers
   title: Events App
-  description: description Events App
-  termsOfService: https://academy.alterra.id
+  version: 1.0.0
+  description: "API Documentation for InfinitySport"
   contact:
-    name: API Support
-    url: https://www.alterra.id/support
-    email: support@alterra.id
-  license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: "1.0"
+    name: Official
+   
+    email: alfin.7007@gmail.com
 externalDocs:
-  description: alterra external docs API
-  url: https://alterra.id
+  description: "GitHub Repository of Group Project 3 : soundfest"
+  url: https://github.com/project-online-shop/backend/
 servers:
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/fazamttqn/EventsApp/1.0.0
-  - url: https://{environment}.api.alterra.id/v1
-    description: ALTA API server
-    variables:
-      environment:
-        default: dev
-        enum:
-          - dev
-          - staging
-          - production
-  - url: http://13.215.249.83:80
-    description: ALTA API server
+    url: https://virtserver.swaggerhub.com/Alfin7007/soundfest/1.0.0
+  - description: base url api
+    url: 44.208.20.97:80
 tags:
   - name: Login
     description: User Authentication
@@ -57,7 +44,7 @@ paths:
             examples:
               userData:
                 description: "Data user"
-                value: { email: "alta@alterra.id", password: "inipassword" }
+                value: { email: alta@alterra.id, password: inipassword }
       responses:
         "200":
           description: "Login Success"
@@ -75,7 +62,7 @@ paths:
                       data:
                         {
                           id: 1,
-                          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co,
                         },
                     }
         "400":
@@ -87,8 +74,7 @@ paths:
               examples:
                 responseData:
                   description: response failed
-                  value:
-                    { code: 400, message: "Login Failed" }
+                  value: { code: 400, message: "Login Failed" }
   ##############################
   #          REGISTER          #
   ##############################
@@ -122,11 +108,7 @@ paths:
               examples:
                 responseData:
                   description: response success
-                  value:
-                    {
-                      code: 200,
-                      message: "Register Success",
-                    }
+                  value: { code: 200, message: "Register Success" }
         "400":
           description: "Register Failed"
           content:
@@ -136,11 +118,7 @@ paths:
               examples:
                 responseData:
                   description: response failed
-                  value:
-                    {
-                      code: 400,
-                      message: "All input data must be filled",
-                    }
+                  value: { code: 400, message: "All input data must be filled" }
   ##########################
   #          USER          #
   ##########################
@@ -188,6 +166,8 @@ paths:
         - User
       summary: update user
       description: Updated user description
+      security:
+        - JWTAuth: []
       requestBody:
         content:
           application/json:
@@ -228,6 +208,8 @@ paths:
         - User
       summary: delete user
       description: Delete user description
+      security:
+        - JWTAuth: []
       responses:
         "200":
           description: Delete Success
@@ -252,12 +234,15 @@ paths:
   ############################
   #          EVENTS          #
   ############################
+
   /events:
     post:
       tags:
         - Event
       summary: create events
       description: Create events description
+      security:
+        - JWTAuth: []
       requestBody:
         content:
           application/json:
@@ -286,11 +271,7 @@ paths:
               examples:
                 responseData:
                   description: response success
-                  value:
-                    {
-                      code: 200,
-                      message: "Success insert event",
-                    }
+                  value: { code: 200, message: "Success insert event" }
         "400":
           description: "Failed to create event"
           content:
@@ -300,11 +281,7 @@ paths:
               examples:
                 responseData:
                   description: response failed
-                  value:
-                    {
-                      code: 400,
-                      message: "Failed insert event",
-                    }
+                  value: { code: 400, message: "Failed insert event" }
     get:
       tags:
         - Event
@@ -324,9 +301,11 @@ paths:
                     {
                       code: 200,
                       message: "Success get all events",
+                      currenttime: 2009-11-10 23:00:00,
                       data:
                         [
                           {
+                            id_event: 12,
                             photo_events: URL,
                             name: Webinar Pendidikan,
                             hosted_by: Company Surya Kencana,
@@ -346,11 +325,7 @@ paths:
               examples:
                 responseData:
                   description: response home failed
-                  value:
-                    {
-                      code: 400,
-                      message: "Failed get all events",
-                    }
+                  value: { code: 400, message: "Failed get all events" }
   /events/{id_event}:
     get:
       tags:
@@ -363,7 +338,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseWithData"
+                $ref: "#/components/schemas/responseEvent"
               examples:
                 responseData:
                   description: response event success
@@ -371,8 +346,10 @@ paths:
                     {
                       code: 200,
                       message: "Success get event",
+                      currenttime: 2009-11-10 23:00:00,
                       data:
                         {
+                          id_event: 10,
                           photo_events: URL,
                           name: Webinar Pendidikan,
                           hosted_by: Company Surya Kencana,
@@ -380,9 +357,11 @@ paths:
                           city: Jakarta,
                           location: (longitude and latitude),
                           details: Ini adalah description webinar bertema pendidikan,
-                          participant: [
-                            "Budi", "Angga"
-                          ],
+                          participant:
+                            [
+                              { name: Budi, url: image.example.com },
+                              { name: Budi, url: image.example.com },
+                            ],
                         },
                     }
         "400":
@@ -394,16 +373,14 @@ paths:
               examples:
                 responseData:
                   description: response event failed
-                  value:
-                    {
-                      code: 400,
-                      message: "Failed to get event",
-                    }
+                  value: { code: 400, message: "Failed to get event" }
     put:
       tags:
         - Event
       summary: update event
       description: Updated event description
+      security:
+        - JWTAuth: []
       requestBody:
         content:
           application/json:
@@ -448,6 +425,8 @@ paths:
         - Event
       summary: delete event
       description: Delete event description
+      security:
+        - JWTAuth: []
       responses:
         "200":
           description: Delete Success
@@ -458,11 +437,7 @@ paths:
               examples:
                 responseData:
                   description: response success
-                  value:
-                    {
-                      code: 200,
-                      message: "Delete event success",
-                    }
+                  value: { code: 200, message: "Delete event success" }
         "400":
           description: Failed Deleted
           content:
@@ -472,12 +447,52 @@ paths:
               examples:
                 responseData:
                   description: response failed
+                  value: { code: 400, message: "Failed event deleted" }
+  /myevents:
+    get:
+      tags:
+        - Event
+      summary: get all myevents
+      description: My Event description
+      responses:
+        "200":
+          description: "Get all myevents success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseEvent"
+              examples:
+                responseHome:
+                  description: response myevents success
                   value:
                     {
-                      code: 400,
-                      message: "Failed event deleted",
+                      code: 200,
+                      message: "Success get all myevents",
+                      currenttime: 2009-11-10 23:00:00,
+                      data:
+                        [
+                          {
+                            id_event: 23,
+                            photo_events: URL,
+                            name: Webinar Pendidikan,
+                            hosted_by: Company Surya Kencana,
+                            date: 20-07-2022,
+                            city: Jakarta,
+                            location: (longitude and latitude),
+                            details: Ini adalah description webinar bertema pendidikan,
+                          },
+                        ],
                     }
-
+        "400":
+          description: "Failed to get all myevents"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData:
+                  description: response home failed
+                  value: { code: 400, message: "Failed get all myevents" }
   ###################################
   #          PARTICIPATION          #
   ###################################
@@ -488,6 +503,8 @@ paths:
         - Participation
       summary: join event
       description: Join event description
+      security:
+        - JWTAuth: []
       requestBody:
         content:
           application/json:
@@ -508,10 +525,7 @@ paths:
                 responseData:
                   description: response success
                   value:
-                    {
-                      code: 200,
-                      message: "Success insert event participation",
-                    }
+                    { code: 200, message: "Success insert event participation" }
         "400":
           description: "Failed Join"
           content:
@@ -522,16 +536,15 @@ paths:
                 responseData:
                   description: response failed
                   value:
-                    {
-                      code: 400,
-                      message: "Failed insert event participation",
-                    }
+                    { code: 400, message: "Failed insert event participation" }
     # Mengambil data event yang diikuti oleh user
     get:
       tags:
         - Participation
       summary: get all event by participation
       description: Participation Event description
+      security:
+        - JWTAuth: []
       responses:
         "200":
           description: "Get all events participation success"
@@ -546,9 +559,11 @@ paths:
                     {
                       code: 200,
                       message: "Success get all your events",
+                      currenttime: 2009-11-10 23:00:00,
                       data:
                         [
                           {
+                            id_participant: 23,
                             photo_events: URL,
                             name: Webinar Pendidikan,
                             hosted_by: Company Surya Kencana,
@@ -568,11 +583,44 @@ paths:
               examples:
                 responseJoin:
                   description: failed response event participation success
-                  value:
-                    {
-                      code: 400,
-                      message: "Failed get all your events",
-                    }
+                  value: { code: 400, message: "Failed get all your events" }
+    delete:
+      tags:
+        - Participation
+      summary: cancel participation
+      description: Delete participation description
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestCancel"
+            examples:
+              cancelData:
+                description: "Cancel participation"
+                value: { id_participant: 12 }
+      responses:
+        "200":
+          description: Delete Participation Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseWithNoData"
+              examples:
+                responseData:
+                  description: response success
+                  value: { code: 200, message: "Delete Success" }
+        "400":
+          description: Failed Deleted Participation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedResponse"
+              examples:
+                responseData:
+                  description: response failed
+                  value: { code: 400, message: "Failed deleted" }
   #############################
   #          COMMENT          #
   #############################
@@ -583,6 +631,8 @@ paths:
         - Participation
       summary: comment event
       description: Create comment event description
+      security:
+        - JWTAuth: []
       requestBody:
         content:
           application/json:
@@ -607,11 +657,7 @@ paths:
               examples:
                 responseData:
                   description: response comment success
-                  value:
-                    {
-                      code: 200,
-                      message: "Success insert your comment",
-                    }
+                  value: { code: 200, message: "Success insert your comment" }
         "400":
           description: "Failed Comment"
           content:
@@ -621,11 +667,7 @@ paths:
               examples:
                 responseData:
                   description: failed response comment
-                  value:
-                    {
-                      code: 400,
-                      message: "Failed insert your comment",
-                    }
+                  value: { code: 400, message: "Failed insert your comment" }
   # Mengambil semua data comment yang terkait dengan event
   /events/comments/{id_event}:
     get:
@@ -633,6 +675,8 @@ paths:
         - Participation
       summary: get all comment event
       description: Comment event description
+      security:
+        - JWTAuth: []
       responses:
         "200":
           description: "Get all comment events success"
@@ -650,6 +694,7 @@ paths:
                       data:
                         [
                           {
+                            id_comment: 12,
                             name: Angga,
                             comment: Ini spesifik alamat eventnya dimana gimana ya kak?,
                           },
@@ -664,11 +709,7 @@ paths:
               examples:
                 responseComment:
                   description: failed response comment event success
-                  value:
-                    {
-                      code: 400,
-                      message: "Failed get all comment events",
-                    }
+                  value: { code: 400, message: "Failed get all comment events" }
 
 components:
   schemas:
@@ -782,7 +823,8 @@ components:
         {
           "code": { type: number },
           "message": { type: string },
-          "data": { type: array},
+          "currenttime": { type: string },
+          "data": { type: array },
         }
 
     # Join Participant
@@ -791,7 +833,6 @@ components:
       properties:
         "id":
           type: number
-
 
     # For all features
     responseWithNoData:
@@ -821,3 +862,9 @@ components:
           type: string
         "comment":
           type: string
+
+    requestCancel:
+      type: object
+      properties:
+        "id_participation":
+          type: number
