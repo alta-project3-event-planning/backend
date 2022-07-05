@@ -6,15 +6,21 @@ import (
 )
 
 type Event struct {
-	ID         int       `json:"id_event" form:"id_event"`
-	Name       string    `json:"name" form:"name"`
-	Detail     string    `json:"details" form:"details"`
-	URL        string    `json:"image_url" form:"imageurl"`
-	HostedBy   string    `json:"hostedby" form:"hostedby"`
-	Performers string    `json:"performers" form:"performers"`
-	Date       time.Time `json:"date" form:"date"`
-	City       string    `json:"city" form:"city"`
-	Location   string    `json:"location" form:"location"`
+	ID          int           `json:"id_event" form:"id_event"`
+	Name        string        `json:"name" form:"name"`
+	URL         string        `json:"image_url" form:"imageurl"`
+	HostedBy    string        `json:"hostedby" form:"hostedby"`
+	Performers  string        `json:"performers" form:"performers"`
+	Date        time.Time     `json:"date" form:"date"`
+	City        string        `json:"city" form:"city"`
+	Location    string        `json:"location" form:"location"`
+	Detail      string        `json:"details" form:"details"`
+	Participant []Participant `json:"participant" form:"participant"`
+}
+
+type Participant struct {
+	Name string `json:"name" form:"name"`
+	Url  string `json:"url" form:"url"`
 }
 
 func FromCore(data events.Core) Event {

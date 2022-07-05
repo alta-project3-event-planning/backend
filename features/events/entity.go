@@ -18,17 +18,17 @@ type Core struct {
 	City        string
 	Location    string
 	IDUser      int
-	User        User
+	Participant []Participant
 }
 
-type User struct {
-	ID    int
-	Name  string
-	Email string
+type Participant struct {
+	ID   int
+	Name string
+	Url  string
 }
 
 type Business interface {
-	GetAllEvent() (data []Core, err error)
+	GetAllEvent(limit int, offset int, city string, name string) (data []Core, err error)
 	GetEventByID(param int) (data Core, err error)
 	InsertEvent(dataReq Core) (err error)
 	DeleteEventByID(id int, userId int) (err error)
@@ -37,7 +37,7 @@ type Business interface {
 }
 
 type Data interface {
-	SelectData() (data []Core, err error)
+	SelectData(limit int, offset int, city string, name string) (data []Core, err error)
 	SelectDataByID(param int) (data Core, err error)
 	InsertData(dataReq Core) (err error)
 	DeleteDataByID(id int, userId int) (err error)

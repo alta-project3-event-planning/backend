@@ -17,9 +17,10 @@ func NewEventRepository(conn *gorm.DB) events.Data {
 	}
 }
 
-func (repo *mysqlEventRepository) SelectData() (response []events.Core, err error) {
+func (repo *mysqlEventRepository) SelectData(limit int, offset int, name string, city string) (response []events.Core, err error) {
 	var dataEvent []Event
-	result := repo.db.Find(&dataEvent)
+
+	result := repo.db.Where("city LIKE ? and name LIKE ?", "%"+city+"%", "%"+name+"%").Limit(limit).Offset(offset).Find(&dataEvent).Order("id desc")
 	if result.Error != nil {
 		return []events.Core{}, result.Error
 	}

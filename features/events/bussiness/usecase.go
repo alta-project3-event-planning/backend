@@ -15,8 +15,8 @@ func NewEventBusiness(usrData events.Data) events.Business {
 	}
 }
 
-func (uc *eventUseCase) GetAllEvent() (response []events.Core, err error) {
-	resp, errData := uc.eventData.SelectData()
+func (uc *eventUseCase) GetAllEvent(limit int, offset int, name string, city string ) (response []events.Core, err error) {
+	resp, errData := uc.eventData.SelectData(limit, offset, name, city)
 	return resp, errData
 }
 
@@ -58,6 +58,9 @@ func (uc *eventUseCase) UpdateEventByID(eventReq events.Core, id int, userId int
 	}
 	if eventReq.HostedBy != "" {
 		updateMap["hostedby"] = &eventReq.HostedBy
+	}
+	if eventReq.Url != "" {
+		updateMap["url"] = &eventReq.Url
 	}
 
 	err = uc.eventData.UpdateDataByID(updateMap, id, userId)

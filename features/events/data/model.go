@@ -3,6 +3,7 @@ package data
 import (
 	"project3/eventapp/features/events"
 	"project3/eventapp/features/users/data"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -12,7 +13,7 @@ type Event struct {
 	Name       string    `json:"name" form:"name"`
 	Detail     string    `json:"detail" form:"detail"`
 	URL        string    `json:"url" form:"url"`
-	Date       string	 `json:"time" form:"time"`
+	Date       time.Time `json:"date" form:"date"`
 	Performers string    `json:"performers" form:"performers"`
 	HostedBy   string    `json:"hostedby" form:"hostedby"`
 	City       string    `json:"city" form:"city"`
@@ -21,11 +22,10 @@ type Event struct {
 	User       data.User
 }
 
-type User struct {
-	gorm.Model
-	Name     string `json:"name" form:"name"`
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
+type Participant struct {
+	ID   int    `json:"id_participant" form:"id_participant"`
+	Name string `json:"name" form:"name"`
+	Url  string `json:"url" form:"url"`
 }
 
 //DTO
@@ -40,6 +40,7 @@ func (data *Event) toCore() events.Core {
 		HostedBy:    data.HostedBy,
 		Performers:  data.Performers,
 		Location:    data.Location,
+		Date:        data.Date,
 		IDUser:      data.UserID,
 	}
 }
@@ -59,14 +60,29 @@ func fromCore(core events.Core) Event {
 		URL:        core.Url,
 		HostedBy:   core.HostedBy,
 		Performers: core.Performers,
+		Location:   core.Location,
+		Date:       core.Date,
+		City:       core.City,
 		UserID:     core.IDUser,
-		User: data.User{
-			Name:  core.User.Name,
-			Email: core.User.Email,
-		},
 	}
 }
 
 func toCore(data Event) events.Core {
 	return data.toCore()
+}
+
+func (data *Participant) toParticipantCore() events.Participant {
+	return events.Participant{
+		ID:   data.ID,
+		Name: data.Name,
+		Url:  data.Url,
+	}
+}
+
+func ToParticipantCoreList(data []Participant) []events.Participant {
+	result := []events.Participant{}
+	for key := range data {
+		result = append(result, data[key].toParticipantCore())
+	}
+	return result
 }
