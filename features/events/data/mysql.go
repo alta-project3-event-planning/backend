@@ -17,9 +17,10 @@ func NewEventRepository(conn *gorm.DB) events.Data {
 	}
 }
 
-func (repo *mysqlEventRepository) SelectData() (response []events.Core, err error) {
+func (repo *mysqlEventRepository) SelectData(limit int, offset int, name string, city string) (response []events.Core, err error) {
 	var dataEvent []Event
-	result := repo.db.Find(&dataEvent)
+
+	result := repo.db.Where("city LIKE ? and name LIKE ?", "%"+city+"%", "%"+name+"%").Limit(limit).Offset(offset).Find(&dataEvent).Order("id desc")
 	if result.Error != nil {
 		return []events.Core{}, result.Error
 	}
@@ -74,11 +75,22 @@ func (repo *mysqlEventRepository) UpdateDataByID(dataReq map[string]interface{},
 
 }
 
-func (repo *mysqlEventRepository) SelectDataByUserID(id_user int) (response []events.Core, err error) {
+func (repo *mysqlEventRepository) SelectDataByUserID(id_user, limit, offset int) (response []events.Core, err error) {
 	var dataEvent []Event
-	result := repo.db.Where("user_id = ?", id_user).Find(&dataEvent)
+	result := repo.db.Where("user_id = ?", id_user).Limit(limit).Offset(offset).Find(&dataEvent)
 	if result.Error != nil {
 		return []events.Core{}, result.Error
 	}
 	return ToCoreList(dataEvent), result.Error
+}
+
+func (repo *mysqlEventRepository) SelectParticipantData(id_event int) (response []events.Participant, err error) {
+	var dataParticipant []Participant
+
+	result := repo.db.Preload("User").Find(&dataParticipant, "event_id = ?", id_event).Order("id desc")
+	if result.Error != nil {
+		return []events.Participant{}, result.Error
+	}
+
+	return ToParticipantCoreList(dataParticipant), result.Error
 }

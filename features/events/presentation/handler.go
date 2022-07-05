@@ -26,46 +26,45 @@ func NewEventHandler(business events.Business) *EventHandler {
 }
 
 func (h *EventHandler) GetAll(c echo.Context) error {
-	result, err := h.eventBusiness.GetAllEvent()
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	name := c.QueryParam("name")
+	city := c.QueryParam("city")
+	limitint, _ := strconv.Atoi(limit)
+	offsetint, _ := strconv.Atoi(offset)
+
+	result, err := h.eventBusiness.GetAllEvent(limitint, offsetint, name, city)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to get all data",
 		})
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success",
-		"data":    _response_event.FromCoreList(result),
-	})
+	respons := _response_event.FromCoreList(result)
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("Success get all events", respons))
 }
 
 func (h *EventHandler) GetDataById(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	result, err := h.eventBusiness.GetEventByID(id)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get data",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get event"))
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success",
-		"data":    _response_event.FromCore(result),
-	})
+
+	response := _response_event.FromCoreByID(result)
+
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("success get event", response))
 }
 
 func (h *EventHandler) InsertData(c echo.Context) error {
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get user id",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed insert data"))
 	}
 
 	event := _request_event.Event{}
 	err_bind := c.Bind(&event)
 	if err_bind != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to bind insert data",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseSuccessNoData("success insert event"))
 	}
 
 	fileData, fileInfo, fileErr := c.Request().FormFile("file")
@@ -100,6 +99,7 @@ func (h *EventHandler) InsertData(c echo.Context) error {
 
 	err := h.eventBusiness.InsertEvent(eventCore)
 	if err != nil {
+		fmt.Println(err)
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to insert data",
 		})
@@ -136,16 +136,12 @@ func (h *EventHandler) UpdateData(c echo.Context) error {
 	eventReq := _request_event.Event{}
 	err_bind := c.Bind(&eventReq)
 	if err_bind != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to bind update data",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to bind data"))
 	}
 
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get user id",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get user id"))
 	}
 
 	eventCore := _request_event.ToCore(eventReq)
@@ -189,21 +185,22 @@ func (h *EventHandler) UpdateData(c echo.Context) error {
 }
 
 func (h *EventHandler) GetEventByUser(c echo.Context) error {
-	id_user, errToken := middlewares.ExtractToken(c)
 
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	limitint, _ := strconv.Atoi(limit)
+	offsetint, _ := strconv.Atoi(offset)
+
+	id_user, errToken := middlewares.ExtractToken(c)
 	if errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get id user",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get user id"))
 	}
-	result, err := h.eventBusiness.GetEventByUserID(id_user)
+
+	result, err := h.eventBusiness.GetEventByUserID(id_user, limitint, offsetint)
+
+	respons := _response_event.FromCoreList(result)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get all data",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get all my events"))
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success",
-		"data":    _response_event.FromCoreList(result),
-	})
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("success get all my events", respons))
 }

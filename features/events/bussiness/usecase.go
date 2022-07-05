@@ -15,13 +15,21 @@ func NewEventBusiness(usrData events.Data) events.Business {
 	}
 }
 
-func (uc *eventUseCase) GetAllEvent() (response []events.Core, err error) {
-	resp, errData := uc.eventData.SelectData()
+func (uc *eventUseCase) GetAllEvent(limit int, offset int, name string, city string) (response []events.Core, err error) {
+	resp, errData := uc.eventData.SelectData(limit, offset, name, city)
 	return resp, errData
 }
 
 func (uc *eventUseCase) GetEventByID(id int) (response events.Core, err error) {
 	response, err = uc.eventData.SelectDataByID(id)
+	if err != nil {
+		return events.Core{}, err
+	}
+	responseParticipant, errParticipant := uc.eventData.SelectParticipantData(response.ID)
+	response.Participant = responseParticipant
+	if errParticipant != nil {
+		return events.Core{}, errParticipant
+	}
 	return response, err
 }
 
@@ -59,12 +67,15 @@ func (uc *eventUseCase) UpdateEventByID(eventReq events.Core, id int, userId int
 	if eventReq.HostedBy != "" {
 		updateMap["hostedby"] = &eventReq.HostedBy
 	}
+	if eventReq.Url != "" {
+		updateMap["url"] = &eventReq.Url
+	}
 
 	err = uc.eventData.UpdateDataByID(updateMap, id, userId)
 	return err
 }
 
-func (uc *eventUseCase) GetEventByUserID(id_user int) (response []events.Core, err error) {
-	resp, errData := uc.eventData.SelectDataByUserID(id_user)
+func (uc *eventUseCase) GetEventByUserID(id_user, limit, offset int) (response []events.Core, err error) {
+	resp, errData := uc.eventData.SelectDataByUserID(id_user, limit, offset)
 	return resp, errData
 }
