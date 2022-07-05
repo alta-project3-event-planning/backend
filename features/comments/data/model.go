@@ -2,8 +2,7 @@ package data
 
 import (
 	"project3/eventapp/features/comments"
-	_event "project3/eventapp/features/events/data"
-	_user "project3/eventapp/features/users/data"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -13,8 +12,31 @@ type Comment struct {
 	IdEvent int
 	IdUser  int
 	Comment string `gorm:"text" json:"text" binding:"required"`
-	Event   _event.Event
-	User    _user.User
+	Event   Event
+	User    User
+}
+
+type Event struct {
+	gorm.Model
+	Name       string    `json:"name" form:"name"`
+	Detail     string    `json:"detail" form:"detail"`
+	URL        string    `json:"url" form:"url"`
+	Date       time.Time `json:"time" form:"time"`
+	Performers string    `json:"performers" form:"performers"`
+	HostedBy   string    `json:"hostedby" form:"hostedby"`
+	City       string    `json:"city" form:"city"`
+	Location   string    `json:"location" form:"location"`
+	IDUser     int
+	User       User
+	Comment    []Comment
+}
+
+type User struct {
+	gorm.Model
+	Name     string
+	Email    string
+	Password string
+	Event    []Event
 }
 
 func (data *Comment) toCore() comments.Core {
