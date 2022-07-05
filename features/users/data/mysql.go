@@ -49,6 +49,7 @@ func (repo *mysqlUserRepository) InsertData(userData users.Core) (row int, err e
 		return -1, errors.New("failed syntax email address")
 	}
 
+	userModel.URL = "https://infinitysport.s3.amazonaws.com/default-user.png"
 	result := repo.db.Create(&userModel)
 	if result.Error != nil {
 		return -1, result.Error
