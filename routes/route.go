@@ -21,6 +21,8 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("/users/details", presenter.UserPresenter.GetDataById, middlewares.JWTMiddleware())
 	e.PUT("/users", presenter.UserPresenter.Update, middlewares.JWTMiddleware())
 	e.DELETE("/users", presenter.UserPresenter.Delete, middlewares.JWTMiddleware())
+	
+	e.POST("/events/comments", presenter.CommentPresenter.Add, middlewares.JWTMiddleware())
 
 	return e
 }
