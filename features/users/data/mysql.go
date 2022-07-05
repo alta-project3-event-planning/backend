@@ -3,6 +3,8 @@ package data
 import (
 	"errors"
 	"fmt"
+	"regexp"
+
 	// "fmt"
 	"project3/eventapp/features/users"
 
@@ -39,6 +41,14 @@ func (repo *mysqlUserRepository) SelectDataById(id int) (response users.Core, er
 
 func (repo *mysqlUserRepository) InsertData(userData users.Core) (row int, err error) {
 	userModel := fromCore(userData)
+
+	//	Check syntax email address
+	pattern := `^\w+@\w+\.\w+$`
+	matched, _ := regexp.Match(pattern, []byte(userData.Email))
+	if !matched {
+		return -1, errors.New("failed syntax email address")
+	}
+
 	result := repo.db.Create(&userModel)
 	if result.Error != nil {
 		return -1, result.Error
