@@ -3,11 +3,11 @@ package presentation
 import (
 	"fmt"
 	"net/http"
-	"project3/eventapp/features/products"
+	"project3/eventapp/features/events"
 	"time"
 
-	_request_product "project3/eventapp/features/products/presentation/request"
-	_response_product "project3/eventapp/features/products/presentation/response"
+	_request_event "project3/eventapp/features/events/presentation/request"
+	_response_event "project3/eventapp/features/events/presentation/response"
 	"project3/eventapp/helper"
 	"project3/eventapp/middlewares"
 	"strconv"
@@ -15,18 +15,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type ProductHandler struct {
-	productBusiness products.Business
+type EventHandler struct {
+	eventBusiness events.Business
 }
 
-func NewProductHandler(business products.Business) *ProductHandler {
-	return &ProductHandler{
-		productBusiness: business,
+func NewEventHandler(business events.Business) *EventHandler {
+	return &EventHandler{
+		eventBusiness: business,
 	}
 }
 
-func (h *ProductHandler) GetAll(c echo.Context) error {
-	result, err := h.productBusiness.GetAllProduct()
+func (h *EventHandler) GetAll(c echo.Context) error {
+	result, err := h.eventBusiness.GetAllEvent()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to get all data",
@@ -34,13 +34,13 @@ func (h *ProductHandler) GetAll(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success",
-		"data":    _response_product.FromCoreList(result),
+		"data":    _response_event.FromCoreList(result),
 	})
 }
 
-func (h *ProductHandler) GetDataById(c echo.Context) error {
+func (h *EventHandler) GetDataById(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	result, err := h.productBusiness.GetProductByID(id)
+	result, err := h.eventBusiness.GetEventByID(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to get data",
@@ -48,11 +48,11 @@ func (h *ProductHandler) GetDataById(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success",
-		"data":    _response_product.FromCore(result),
+		"data":    _response_event.FromCore(result),
 	})
 }
 
-func (h *ProductHandler) InsertData(c echo.Context) error {
+func (h *EventHandler) InsertData(c echo.Context) error {
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -60,8 +60,8 @@ func (h *ProductHandler) InsertData(c echo.Context) error {
 		})
 	}
 
-	product := _request_product.Product{}
-	err_bind := c.Bind(&product)
+	event := _request_event.Event{}
+	err_bind := c.Bind(&event)
 	if err_bind != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to bind insert data",
@@ -85,7 +85,7 @@ func (h *ProductHandler) InsertData(c echo.Context) error {
 	}
 
 	// memberikan nama file
-	fileName := strconv.Itoa(userID_token) + "_" + product.Name + time.Now().Format("2006-01-02 15:04:05") + "." + extension
+	fileName := strconv.Itoa(userID_token) + "_" + event.Name + time.Now().Format("2006-01-02 15:04:05") + "." + extension
 
 	url, errUploadImg := helper.UploadImageToS3(fileName, fileData)
 
@@ -94,12 +94,11 @@ func (h *ProductHandler) InsertData(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to upload file"))
 	}
 
-	productCore := _request_product.ToCore(product)
-	productCore.UserID = userID_token
-	productCore.Photo = fileInfo.Filename
-	productCore.PhotoUrl = url
+	eventCore := _request_event.ToCore(event)
+	eventCore.IDUser = userID_token
+	eventCore.Url = url
 
-	err := h.productBusiness.InsertProduct(productCore)
+	err := h.eventBusiness.InsertEvent(eventCore)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to insert data",
@@ -111,7 +110,7 @@ func (h *ProductHandler) InsertData(c echo.Context) error {
 
 }
 
-func (h *ProductHandler) DeleteData(c echo.Context) error {
+func (h *EventHandler) DeleteData(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	userID_token, errToken := middlewares.ExtractToken(c)
@@ -121,7 +120,7 @@ func (h *ProductHandler) DeleteData(c echo.Context) error {
 		})
 	}
 
-	err := h.productBusiness.DeleteProductByID(id, userID_token)
+	err := h.eventBusiness.DeleteEventByID(id, userID_token)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to delete data" + err.Error(),
@@ -132,10 +131,10 @@ func (h *ProductHandler) DeleteData(c echo.Context) error {
 	})
 }
 
-func (h *ProductHandler) UpdateData(c echo.Context) error {
+func (h *EventHandler) UpdateData(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	productReq := _request_product.Product{}
-	err_bind := c.Bind(&productReq)
+	eventReq := _request_event.Event{}
+	err_bind := c.Bind(&eventReq)
 	if err_bind != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to bind update data",
@@ -149,7 +148,7 @@ func (h *ProductHandler) UpdateData(c echo.Context) error {
 		})
 	}
 
-	productCore := _request_product.ToCore(productReq)
+	eventCore := _request_event.ToCore(eventReq)
 
 	fileData, fileInfo, fileErr := c.Request().FormFile("file")
 	if fileErr != http.ErrMissingFile {
@@ -169,7 +168,7 @@ func (h *ProductHandler) UpdateData(c echo.Context) error {
 		}
 
 		// memberikan nama file
-		fileName := strconv.Itoa(userID_token) + "_" + productReq.Name + time.Now().Format("2006-01-02 15:04:05") + "." + extension
+		fileName := strconv.Itoa(userID_token) + "_" + eventReq.Name + time.Now().Format("2006-01-02 15:04:05") + "." + extension
 
 		url, errUploadImg := helper.UploadImageToS3(fileName, fileData)
 
@@ -178,18 +177,18 @@ func (h *ProductHandler) UpdateData(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to upload file"))
 		}
 
-		productCore.PhotoUrl = url
+		eventCore.Url = url
 	}
 
-	err := h.productBusiness.UpdateProductByID(productCore, id, userID_token)
+	err := h.eventBusiness.UpdateEventByID(eventCore, id, userID_token)
 	if err != nil {
 		fmt.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed update data"))
 	}
-	return c.JSON(http.StatusOK, helper.ResponseSuccessNoData("sucsess update product"))
+	return c.JSON(http.StatusOK, helper.ResponseSuccessNoData("sucsess update event"))
 }
 
-func (h *ProductHandler) GetProductByUser(c echo.Context) error {
+func (h *EventHandler) GetEventByUser(c echo.Context) error {
 	id_user, errToken := middlewares.ExtractToken(c)
 
 	if errToken != nil {
@@ -197,7 +196,7 @@ func (h *ProductHandler) GetProductByUser(c echo.Context) error {
 			"message": "failed to get id user",
 		})
 	}
-	result, err := h.productBusiness.GetProductByUserID(id_user)
+	result, err := h.eventBusiness.GetEventByUserID(id_user)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to get all data",
@@ -205,6 +204,6 @@ func (h *ProductHandler) GetProductByUser(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success",
-		"data":    _response_product.FromCoreList(result),
+		"data":    _response_event.FromCoreList(result),
 	})
 }

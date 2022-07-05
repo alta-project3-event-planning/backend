@@ -5,18 +5,20 @@ import (
 )
 
 type Core struct {
-	ID            int
-	Name          string
+	ID          int
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	Name        string
 	EventName   string
 	EventDetail string
-	Stock         int
-	Price         int
-	Photo         string
-	PhotoUrl      string
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
-	UserID        int
-	User          User
+	Url         string
+	Date        time.Time
+	Performers  string
+	HostedBy    string
+	City        string
+	Location    string
+	IDUser      int
+	User        User
 }
 
 type User struct {

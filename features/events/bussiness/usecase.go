@@ -26,7 +26,7 @@ func (uc *eventUseCase) GetEventByID(id int) (response events.Core, err error) {
 }
 
 func (uc *eventUseCase) InsertEvent(eventRequest events.Core) error {
-	if eventRequest.Name == "" || eventRequest.PhotoUrl == "" || eventRequest.EventDetail == "" || eventRequest.Stock == 0 || eventRequest.Price == 0 {
+	if eventRequest.Name == "" || eventRequest.Url == "" || eventRequest.EventDetail == "" || eventRequest.City == "" || eventRequest.Location == "" || eventRequest.Performers == "" || eventRequest.HostedBy == "" {
 		return errors.New("all data must be filled")
 	}
 
@@ -47,8 +47,17 @@ func (uc *eventUseCase) UpdateEventByID(eventReq events.Core, id int, userId int
 	if eventReq.EventDetail != "" {
 		updateMap["detail"] = &eventReq.EventDetail
 	}
-	if eventReq.Stock != 0 {
-		updateMap["stock"] = &eventReq.Stock
+	if eventReq.City != "" {
+		updateMap["city"] = &eventReq.City
+	}
+	if eventReq.Location != "" {
+		updateMap["location"] = &eventReq.Location
+	}
+	if eventReq.Performers != "" {
+		updateMap["performers"] = &eventReq.Performers
+	}
+	if eventReq.HostedBy != "" {
+		updateMap["hostedby"] = &eventReq.HostedBy
 	}
 
 	err = uc.eventData.UpdateDataByID(updateMap, id, userId)

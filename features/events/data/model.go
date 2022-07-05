@@ -2,47 +2,39 @@ package data
 
 import (
 	"project3/eventapp/features/events"
+	"project3/eventapp/features/users/data"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type Event struct {
 	gorm.Model
-	Name   string `json:"name" form:"name"`
-	Detail string `json:"detail" form:"detail"`
-	Photo  string `json:"photo" form:"photo"`
-	URL    string `json:"url" form:"url"`
-	Stock  int    `json:"stock" form:"stock"`
-	Price  int    `json:"price" form:"price"`
-	UserID int
-	User   User
-}
-
-type User struct {
-	gorm.Model
-	Name     string `json:"name" form:"name"`
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
-	Event  []Event
+	Name       string    `json:"name" form:"name"`
+	Detail     string    `json:"detail" form:"detail"`
+	URL        string    `json:"url" form:"url"`
+	Date       time.Time `json:"time" form:"time"`
+	Performers string    `json:"performers" form:"performers"`
+	HostedBy   string    `json:"hostedby" form:"hostedby"`
+	City       string    `json:"city" form:"city"`
+	Location   string    `json:"location" form:"location"`
+	IDUser     int
+	User       data.User
 }
 
 //DTO
 
 func (data *Event) toCore() events.Core {
 	return events.Core{
-		ID:            int(data.ID),
-		Name:          data.Name,
+		ID:          int(data.ID),
+		Name:        data.Name,
 		EventDetail: data.Detail,
-		Photo:         data.Photo,
-		PhotoUrl:      data.URL,
-		Stock:         data.Stock,
-		Price:         data.Price,
-		UserID:        data.UserID,
-		User: events.User{
-			ID:    int(data.User.ID),
-			Name:  data.User.Name,
-			Email: data.User.Email,
-		},
+		Url:         data.URL,
+		City:        data.City,
+		HostedBy:    data.HostedBy,
+		Performers:  data.Performers,
+		Location:    data.Location,
+		IDUser:      data.IDUser,
 	}
 }
 
@@ -56,14 +48,13 @@ func ToCoreList(data []Event) []events.Core {
 
 func fromCore(core events.Core) Event {
 	return Event{
-		Name:   core.Name,
-		Detail: core.EventDetail,
-		Photo:  core.Photo,
-		URL:    core.PhotoUrl,
-		Stock:  core.Stock,
-		Price:  core.Price,
-		UserID: core.UserID,
-		User: User{
+		Name:       core.Name,
+		Detail:     core.EventDetail,
+		URL:        core.Url,
+		HostedBy:   core.HostedBy,
+		Performers: core.Performers,
+		IDUser:     core.IDUser,
+		User: data.User{
 			Name:  core.User.Name,
 			Email: core.User.Email,
 		},
