@@ -35,9 +35,7 @@ func (h *EventHandler) GetAll(c echo.Context) error {
 
 	result, err := h.eventBusiness.GetAllEvent(limitint, offsetint, name, city)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get all data",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get all data"))
 	}
 	respons := _response_event.FromCoreList(result)
 	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("Success get all events", respons))
@@ -100,13 +98,9 @@ func (h *EventHandler) InsertData(c echo.Context) error {
 	err := h.eventBusiness.InsertEvent(eventCore)
 	if err != nil {
 		fmt.Println(err)
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to insert data",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed insert event"))
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success insert data",
-	})
+	return c.JSON(http.StatusOK, helper.ResponseSuccessNoData("success insert event"))
 
 }
 
@@ -115,20 +109,14 @@ func (h *EventHandler) DeleteData(c echo.Context) error {
 
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get user id",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get user id"))
 	}
 
 	err := h.eventBusiness.DeleteEventByID(id, userID_token)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to delete data" + err.Error(),
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed delete event"))
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success delete data",
-	})
+	return c.JSON(http.StatusOK, helper.ResponseSuccessNoData("success delete data"))
 }
 
 func (h *EventHandler) UpdateData(c echo.Context) error {
