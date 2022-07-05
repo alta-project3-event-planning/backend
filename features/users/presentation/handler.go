@@ -1,6 +1,7 @@
 package presentation
 
 import (
+	"fmt"
 	"net/http"
 	"project3/eventapp/features/users"
 	_requestUser "project3/eventapp/features/users/presentation/request"
@@ -8,6 +9,7 @@ import (
 	"project3/eventapp/helper"
 	"project3/eventapp/middlewares"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -61,6 +63,7 @@ func (h *UserHandler) Insert(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError,
 			helper.ResponseFailed("failed to bind insert data"))
 	}
+
 	userCore := _requestUser.ToCore(user)
 	_, err := h.userBusiness.InsertData(userCore)
 	if err != nil {
@@ -102,7 +105,38 @@ func (h *UserHandler) Update(c echo.Context) error {
 			helper.ResponseFailed("failed to bind update data"))
 	}
 
+	//	Dari sini
+	fileData, fileInfo, fileErr := c.Request().FormFile("file")
+	if fileErr == http.ErrMissingFile || fileErr != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get file"))
+	}
+
+	//	Check file extension
+	extension, err_check_extension := helper.CheckFileExtension(fileInfo.Filename)
+	if err_check_extension != nil {
+		return c.JSON(http.StatusBadRequest, helper.ResponseFailed("file extension error"))
+	}
+
+	//	Check file size
+	err_check_size := helper.CheckFileSize(fileInfo.Size)
+	if err_check_size != nil {
+		return c.JSON(http.StatusBadRequest, helper.ResponseFailed("file size error"))
+	}
+
+	//	Memberikan nama file
+	fileName := strconv.Itoa(userID_token) + "_" + userReq.Name + time.Now().Format("2006-01-02 15:04:05") + "." + extension
+
+	url, errUploadImg := helper.UploadImageToS3(fileName, fileData)
+
+	if errUploadImg != nil {
+		fmt.Println(errUploadImg)
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to upload file"))
+	}
+
 	userCore := _requestUser.ToCore(userReq)
+	userCore.URL = url
+	fmt.Println(userCore.URL)
+
 	_, err := h.userBusiness.UpdateData(userCore, userID_token)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError,
