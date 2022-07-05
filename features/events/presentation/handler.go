@@ -32,7 +32,7 @@ func (h *EventHandler) GetAll(c echo.Context) error {
 	city := c.QueryParam("city")
 	limitint, _ := strconv.Atoi(limit)
 	offsetint, _ := strconv.Atoi(offset)
-	
+
 	result, err := h.eventBusiness.GetAllEvent(limitint, offsetint, name, city)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -50,7 +50,7 @@ func (h *EventHandler) GetDataById(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get event"))
 	}
 
-	response := _response_event.FromCore(result)
+	response := _response_event.FromCoreByID(result)
 
 	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("success get event", response))
 }
@@ -185,12 +185,18 @@ func (h *EventHandler) UpdateData(c echo.Context) error {
 }
 
 func (h *EventHandler) GetEventByUser(c echo.Context) error {
-	id_user, errToken := middlewares.ExtractToken(c)
 
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	limitint, _ := strconv.Atoi(limit)
+	offsetint, _ := strconv.Atoi(offset)
+
+	id_user, errToken := middlewares.ExtractToken(c)
 	if errToken != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get user id"))
 	}
-	result, err := h.eventBusiness.GetEventByUserID(id_user)
+
+	result, err := h.eventBusiness.GetEventByUserID(id_user, limitint, offsetint)
 
 	respons := _response_event.FromCoreList(result)
 	if err != nil {

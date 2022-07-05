@@ -18,14 +18,17 @@ type Event struct {
 	HostedBy   string    `json:"hostedby" form:"hostedby"`
 	City       string    `json:"city" form:"city"`
 	Location   string    `json:"location" form:"location"`
-	UserID     int
+	UserID     int       `json:"user_id" form:"user_id"`
 	User       data.User
 }
 
 type Participant struct {
-	ID   int    `json:"id_participant" form:"id_participant"`
-	Name string `json:"name" form:"name"`
-	Url  string `json:"url" form:"url"`
+	ID       int    `json:"participant_id" form:"participant_id"`
+	User_ID  int    `json:"user_id" form:"user_id"`
+	Event_ID int    `json:"event_id" form:"event_id"`
+	Name     string `json:"name" form:"name"`
+	Url      string `json:"url" form:"url"`
+	User     data.User
 }
 
 //DTO
@@ -74,8 +77,8 @@ func toCore(data Event) events.Core {
 func (data *Participant) toParticipantCore() events.Participant {
 	return events.Participant{
 		ID:   data.ID,
-		Name: data.Name,
-		Url:  data.Url,
+		Name: data.User.Name,
+		Url:  data.User.URL,
 	}
 }
 
