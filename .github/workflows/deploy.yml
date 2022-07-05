@@ -17,7 +17,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /home/ubuntu/backend
+            cd /home/ubuntu/eventapp
             git pull origin main
             sudo docker stop groupproject3
             sudo docker rm groupproject3
