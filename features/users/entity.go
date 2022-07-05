@@ -9,6 +9,7 @@ type Core struct{
 	Name 		string
 	Email 		string
 	Password 	string
+	URL			string
 	CreatedAt 	time.Time
 	UpdatedAt 	time.Time
 }
