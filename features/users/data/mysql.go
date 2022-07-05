@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"regexp"
 
-	// "fmt"
 	"project3/eventapp/features/users"
 
 	"gorm.io/gorm"
@@ -45,7 +44,7 @@ func (repo *mysqlUserRepository) InsertData(userData users.Core) (row int, err e
 	//	Check syntax email address
 	pattern := `^\w+@\w+\.\w+$`
 	matched, _ := regexp.Match(pattern, []byte(userData.Email))
-	if !matched {
+	if !matched {  
 		return -1, errors.New("failed syntax email address")
 	}
 
