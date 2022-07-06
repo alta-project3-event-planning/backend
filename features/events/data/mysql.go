@@ -17,14 +17,14 @@ func NewEventRepository(conn *gorm.DB) events.Data {
 	}
 }
 
-func (repo *mysqlEventRepository) SelectData(limit int, offset int, name string, city string) (response []events.Core, err error) {
+func (repo *mysqlEventRepository) SelectData(limit int, offset int, name string, city string) (response []events.Core, totaldata int64, err error) {
 	var dataEvent []Event
-
-	result := repo.db.Where("city LIKE ? and name LIKE ?", "%"+city+"%", "%"+name+"%").Limit(limit).Offset(offset).Find(&dataEvent).Order("id desc")
+	var count int64
+	result := repo.db.Order("id desc").Where("city LIKE ? and name LIKE ?", "%"+city+"%", "%"+name+"%").Limit(limit).Offset(offset).Find(&dataEvent).Count(&count)
 	if result.Error != nil {
-		return []events.Core{}, result.Error
+		return []events.Core{}, 0, result.Error
 	}
-	return ToCoreList(dataEvent), result.Error
+	return ToCoreList(dataEvent), count, result.Error
 }
 
 func (repo *mysqlEventRepository) SelectDataByID(id int) (response events.Core, err error) {
@@ -87,7 +87,7 @@ func (repo *mysqlEventRepository) SelectDataByUserID(id_user, limit, offset int)
 func (repo *mysqlEventRepository) SelectParticipantData(id_event int) (response []events.Participant, err error) {
 	var dataParticipant []Participant
 
-	result := repo.db.Preload("User").Find(&dataParticipant, "event_id = ?", id_event).Order("id desc")
+	result := repo.db.Order("id desc").Preload("User").Find(&dataParticipant, "event_id = ?", id_event)
 	if result.Error != nil {
 		return []events.Participant{}, result.Error
 	}
