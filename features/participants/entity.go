@@ -4,8 +4,8 @@ import "time"
 
 type Core struct {
 	ID        int
-	IdUser    int
-	IdEvent   int
+	UserID    int
+	EventID   int
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	User      User
@@ -25,7 +25,7 @@ type Event struct {
 	HostedBy    string
 	City        string
 	Location    string
-	IDUser      int
+	UserID      int
 	User        User
 }
 
