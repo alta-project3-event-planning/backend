@@ -17,8 +17,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.POST("/register", presenter.UserPresenter.Insert)
 	e.POST("/login", presenter.AuthPresenter.Login)
 
-	e.GET("/users", presenter.UserPresenter.GetAll, middlewares.JWTMiddleware())
-	e.GET("/users/details", presenter.UserPresenter.GetDataById, middlewares.JWTMiddleware())
+	e.GET("/users", presenter.UserPresenter.GetDataById, middlewares.JWTMiddleware())
 	e.PUT("/users", presenter.UserPresenter.Update, middlewares.JWTMiddleware())
 	e.DELETE("/users", presenter.UserPresenter.Delete, middlewares.JWTMiddleware())
 
@@ -31,6 +30,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	
 	e.POST("/events/participations", presenter.ParticipantPresenter.Joined, middlewares.JWTMiddleware())
 	e.GET("/events/participations", presenter.ParticipantPresenter.GetAllEventParticipant, middlewares.JWTMiddleware())
+	e.DELETE("/events/participations/:id", presenter.ParticipantPresenter.DeleteEventbyParticipant, middlewares.JWTMiddleware())
 	
 	return e
 }

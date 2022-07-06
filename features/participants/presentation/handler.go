@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"project3/eventapp/features/participants"
-	"project3/eventapp/helper"
-	"project3/eventapp/middlewares"
 	_request_participant "project3/eventapp/features/participants/presentation/request"
 	_response_participant "project3/eventapp/features/participants/presentation/response"
+	"project3/eventapp/helper"
+	"project3/eventapp/middlewares"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -35,7 +36,7 @@ func (h *ParticipantHandler) Joined(c echo.Context) error {
 	}
 
 	participantCore := _request_participant.ToCore(participant)
-	participantCore.IdUser = userID_token
+	participantCore.UserID = userID_token
 
 	err := h.participantBusiness.AddParticipant(participantCore)
 	if err != nil {
@@ -56,8 +57,24 @@ func (h *ParticipantHandler) GetAllEventParticipant(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get all your event"))
 	}
-	
+
 	response := _response_participant.FromCoreList(result)
 	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("Success get all your events", response))
+
+}
+
+func (h *ParticipantHandler) DeleteEventbyParticipant(c echo.Context) error {
+	idParticipant, _ := strconv.Atoi(c.Param("id"))
+
+	userID_token, errToken := middlewares.ExtractToken(c)
+	if userID_token == 0 || errToken != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get user id"))
+	}
+
+	result := h.participantBusiness.DeleteParticipant(idParticipant, userID_token)
+	if result != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to delete your event"))
+	}
+	return c.JSON(http.StatusOK, helper.ResponseSuccessNoData("success delete to delete your event"))
 
 }

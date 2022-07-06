@@ -7,14 +7,7 @@ import (
 )
 
 type Participant struct {
-	ID      int `json:"id" form:"id"`
-	IdUser  int `json:"user_id" form:"user_id"`
-	IdEvent int `json:"event_id" form:"event_id"`
-	// Event   _event.Event
-}
-
-type Event struct {
-	ID         int       `json:"id_event" form:"id_event"`
+	ID         int       `json:"id_participant" form:"id_participant"`
 	Name       string    `json:"name" form:"name"`
 	Detail     string    `json:"detail" form:"detail"`
 	URL        string    `json:"url" form:"url"`
@@ -23,25 +16,24 @@ type Event struct {
 	HostedBy   string    `json:"hostedby" form:"hostedby"`
 	City       string    `json:"city" form:"city"`
 	Location   string    `json:"location" form:"location"`
-	UserID     int       `json:"user_id" form:"user_id"`
 }
 
-func FromCore(data participants.Event) Event {
-	return Event{
-		ID:         data.ID,
-		URL:        data.Url,
-		Name:       data.Name,
-		HostedBy:   data.HostedBy,
-		Performers: data.Performers,
-		Date:       data.Date,
-		City:       data.City,
-		Location:   data.Location,
-		Detail:     data.EventDetail,
+func FromCore(core participants.Core) Participant {
+	return Participant{
+		ID:         core.ID,
+		Name:       core.Event.Name,
+		Detail:     core.Event.EventDetail,
+		URL:        core.Event.Url,
+		Date:       core.Event.Date,
+		Performers: core.Event.Performers,
+		HostedBy:   core.Event.HostedBy,
+		City:       core.Event.City,
+		Location:   core.Event.Location,
 	}
 }
 
-func FromCoreList(data []participants.Event) []Event {
-	result := []Event{}
+func FromCoreList(data []participants.Core) []Participant {
+	result := []Participant{}
 	for key := range data {
 		result = append(result, FromCore(data[key]))
 	}

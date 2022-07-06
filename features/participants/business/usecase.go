@@ -9,19 +9,27 @@ type participantUseCase struct {
 	participantData participants.Data
 }
 
-// GetAllEventbyParticipant implements participants.Business
-func (uc *participantUseCase) GetAllEventbyParticipant(idUser int) (data []participants.Event, err error) {
+// DeleteParticipan implements participants.Business
+func (uc *participantUseCase) DeleteParticipant(param, userID int) error {
+	err := uc.participantData.DeleteData(param, userID)
+	if err != nil {
+		return errors.New("no data user for deleted")
+	}
+	return nil
+}
+
+func (uc *participantUseCase) GetAllEventbyParticipant(idUser int) (data []participants.Core, err error) {
 	resp, err := uc.participantData.SelectDataEvent(idUser)
 	return resp, err
 }
 
 // AddParticipant implements participants.Business
 func (uc *participantUseCase) AddParticipant(partRequest participants.Core) error {
-	if partRequest.IdEvent == 0 {
+	if partRequest.EventID == 0 {
 		return errors.New("data must be filled")
 	}
 
-	err := uc.participantData.Add(partRequest)
+	err := uc.participantData.AddData(partRequest)
 	return err
 }
 
