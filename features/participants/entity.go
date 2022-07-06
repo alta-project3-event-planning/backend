@@ -8,37 +8,30 @@ type Core struct {
 	EventID   int
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	User      User
 	Event     Event
 }
 
 type Event struct {
 	ID          int
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	Name        string
-	EventName   string
-	EventDetail string
 	Url         string
-	Date        time.Time
-	Performers  string
+	Name        string
 	HostedBy    string
+	Performers  string
+	Date        time.Time
 	City        string
 	Location    string
+	EventDetail string
 	UserID      int
-	User        User
-}
-
-type User struct {
-	ID    int
-	Name  string
-	Email string
 }
 
 type Business interface {
-	AddParticipant(data Core) (row int, err error)
+	AddParticipant(data Core) error
+	GetAllEventbyParticipant(idUser int) (data []Core, err error)
+	DeleteParticipant(param, userID int) error
 }
 
 type Data interface {
-	Add(data Core) (row int, err error)
+	AddData(data Core) error
+	SelectDataEvent(idUser int) (data []Core, err error)
+	DeleteData(param, userID int) error
 }

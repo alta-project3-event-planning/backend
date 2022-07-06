@@ -15,7 +15,7 @@ type Core struct{
 }
 
 type Business interface {
-	GetAllData(limit, offset int) (data []Core, err error)
+	// GetAllData(limit, offset int) (data []Core, err error)
 	GetDataById(param int) (data Core, err error)
 	InsertData(dataReq Core) (row int, err error)
 	DeleteData(param int) (row int, err error)
@@ -23,7 +23,7 @@ type Business interface {
 }
 
 type Data interface {
-	SelectData(limit, offset int) (data []Core, err error)
+	// SelectData(limit, offset int) (data []Core, err error)
 	SelectDataById(param int) (data Core, err error)
 	InsertData(dataReq Core) (row int, err error)
 	DeleteData(param int) (row int, err error)
