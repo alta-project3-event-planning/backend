@@ -19,7 +19,9 @@ func (uc *commentUseCase) AddComment(data comments.Core) (row int, err error) {
 	return row, err
 }
 
-func (uc *commentUseCase) GetCommentByIdEvent(offset, eventId int) (response []comments.Core, err error) {
-	response, err = uc.commentData.GetComment(offset, eventId)
-	return response, err
+func (uc *commentUseCase) GetCommentByIdEvent(limit, offset, eventId int) (response []comments.Core, total int64, err error) {
+	page := limit * (offset - 1)
+	response, total, err = uc.commentData.GetComment(limit, page, eventId)
+	total = total/int64(limit) + 1
+	return response, total, err
 }

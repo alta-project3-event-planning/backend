@@ -10,7 +10,7 @@ type Comment struct {
 	Name      string    `json:"name" form:"name"`
 	Avatar    string    `json:"avatar" form:"avatar"`
 	Comment   string    `json:"comment" form:"comment"`
-	UpdatedAt time.Time `json:"date_time" form:"date_time"`
+	UpdatedAt time.Time `json:"updated_at" form:"updated_at"`
 }
 
 type Event struct {

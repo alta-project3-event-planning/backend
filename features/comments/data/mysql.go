@@ -25,12 +25,13 @@ func (repo *mysqlCommentRepository) Add(data comments.Core) (row int, err error)
 	return int(result.RowsAffected), nil
 }
 
-func (repo *mysqlCommentRepository) GetComment(offset, eventId int) (response []comments.Core, err error) {
+func (repo *mysqlCommentRepository) GetComment(limit, offset, eventId int) (response []comments.Core, total int64, err error) {
 	var dataComment []Comment
-	result := repo.db.Order("id DESC").Where("event_id = ?", eventId).Preload("User").Limit(5).Offset(offset).Find(&dataComment)
+	var count int64
+	result := repo.db.Order("id DESC").Where("event_id = ?", eventId).Preload("User").Limit(limit).Offset(offset).Find(&dataComment).Count(&count)
 
 	if result.Error != nil {
-		return []comments.Core{}, result.Error
+		return []comments.Core{}, int64(0), result.Error
 	}
-	return ToCoreList(dataComment), result.Error
+	return ToCoreList(dataComment), count, result.Error
 }

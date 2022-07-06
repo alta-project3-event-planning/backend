@@ -41,10 +41,10 @@ type User struct {
 
 type Business interface {
 	AddComment(data Core) (row int, err error)
-	GetCommentByIdEvent(offset, event_id int) (data []Core, err error)
+	GetCommentByIdEvent(limit, offset, event_id int) (data []Core, count int64, err error)
 }
 
 type Data interface {
 	Add(data Core) (row int, err error)
-	GetComment(offset, event_id int) (data []Core, err error)
+	GetComment(limit, offset, event_id int) (data []Core, count int64, err error)
 }

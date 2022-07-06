@@ -28,9 +28,7 @@ func NewCommentHandler(business comments.Business) *CommentHandler {
 func (h *CommentHandler) Add(c echo.Context) error {
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get user id",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get user id"))
 	}
 
 	comment := _request_comment.Comment{}
@@ -54,14 +52,13 @@ func (h *CommentHandler) Add(c echo.Context) error {
 
 func (h *CommentHandler) Get(c echo.Context) error {
 	eventId, _ := strconv.Atoi(c.Param("id"))
-	// limit, _ := strconv.Atoi(c.QueryParam("limit"))
-	offset, _ := strconv.Atoi(c.QueryParam("offset"))
-	page := offset * 5
+	limit := 5
+	offset, _ := strconv.Atoi(c.QueryParam("page"))
 
-	result, err := h.commentBusiness.GetCommentByIdEvent(page, eventId)
+	result, total, err := h.commentBusiness.GetCommentByIdEvent(limit, offset, eventId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get all comment events"))
 	}
 	respons := _response_comment.FromCoreList(result)
-	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("success get all comment events", respons))
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithDataPage("success get all comment events", total, respons))
 }
