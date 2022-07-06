@@ -75,13 +75,14 @@ func (repo *mysqlEventRepository) UpdateDataByID(dataReq map[string]interface{},
 
 }
 
-func (repo *mysqlEventRepository) SelectDataByUserID(id_user, limit, offset int) (response []events.Core, err error) {
+func (repo *mysqlEventRepository) SelectDataByUserID(id_user, limit, offset int) (response []events.Core, total int64, err error) {
 	var dataEvent []Event
-	result := repo.db.Where("user_id = ?", id_user).Limit(limit).Offset(offset).Find(&dataEvent)
+	var count int64
+	result := repo.db.Where("user_id = ?", id_user).Limit(limit).Offset(offset).Find(&dataEvent).Count(&count)
 	if result.Error != nil {
-		return []events.Core{}, result.Error
+		return []events.Core{}, 0, result.Error
 	}
-	return ToCoreList(dataEvent), result.Error
+	return ToCoreList(dataEvent), count, result.Error
 }
 
 func (repo *mysqlEventRepository) SelectParticipantData(id_event int) (response []events.Participant, err error) {

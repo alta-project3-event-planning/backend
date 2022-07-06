@@ -77,7 +77,9 @@ func (uc *eventUseCase) UpdateEventByID(eventReq events.Core, id int, userId int
 	return err
 }
 
-func (uc *eventUseCase) GetEventByUserID(id_user, limit, offset int) (response []events.Core, err error) {
-	resp, errData := uc.eventData.SelectDataByUserID(id_user, limit, offset)
-	return resp, errData
+func (uc *eventUseCase) GetEventByUserID(id_user, limit, page int) (response []events.Core, total int64, err error) {
+	offset := limit * (page - 1)
+	resp, total, errData := uc.eventData.SelectDataByUserID(id_user, limit, offset)
+	total = total/int64(limit) + 1
+	return resp, total, errData
 }
