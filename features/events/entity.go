@@ -28,7 +28,7 @@ type Participant struct {
 }
 
 type Business interface {
-	GetAllEvent(limit int, offset int, city string, name string) (data []Core, err error)
+	GetAllEvent(limit int, offset int, city string, name string) (data []Core, total int64, err error)
 	GetEventByID(param int) (data Core, err error)
 	InsertEvent(dataReq Core) (err error)
 	DeleteEventByID(id int, userId int) (err error)
@@ -37,7 +37,7 @@ type Business interface {
 }
 
 type Data interface {
-	SelectData(limit int, offset int, city string, name string) (data []Core, err error)
+	SelectData(limit int, offset int, city string, name string) (data []Core, total int64, err error)
 	SelectDataByID(param int) (data Core, err error)
 	InsertData(dataReq Core) (err error)
 	DeleteDataByID(id int, userId int) (err error)

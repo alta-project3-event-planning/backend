@@ -26,19 +26,18 @@ func NewEventHandler(business events.Business) *EventHandler {
 }
 
 func (h *EventHandler) GetAll(c echo.Context) error {
-	limit := c.QueryParam("limit")
-	offset := c.QueryParam("offset")
+	page := c.QueryParam("page")
 	name := c.QueryParam("name")
 	city := c.QueryParam("city")
-	limitint, _ := strconv.Atoi(limit)
-	offsetint, _ := strconv.Atoi(offset)
+	pageint, _ := strconv.Atoi(page)
+	limitint := 12
 
-	result, err := h.eventBusiness.GetAllEvent(limitint, offsetint, name, city)
+	result, total, err := h.eventBusiness.GetAllEvent(limitint, pageint, name, city)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get all data"))
 	}
 	respons := _response_event.FromCoreList(result)
-	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("Success get all events", respons))
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithDataPage("Success get all events", total, respons))
 }
 
 func (h *EventHandler) GetDataById(c echo.Context) error {

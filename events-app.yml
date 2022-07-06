@@ -178,6 +178,7 @@ paths:
               userData:
                 description: Data user
                 value:
+                  avatar: example.com
                   name: Angga pramaja
                   email: angga@gmail.com
                   password: ituangga
@@ -251,6 +252,14 @@ paths:
         - Event
       summary: get all myevents
       description: My Event description
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: number
+            example: 1
       responses:
         '200':
           description: Get all myevents success
@@ -270,7 +279,8 @@ paths:
                         image_url: URL
                         name: Webinar Pendidikan
                         hostedby: Company Surya Kencana
-                        date: 20-07-2022 18:00:00
+                        performers: kotak
+                        date: 2022-07-05T09:04:43.527Z
                         city: Jakarta
                         location: (longitude and latitude)
                         details: Ini adalah description webinar bertema pendidikan
@@ -306,7 +316,8 @@ paths:
                   image_url: URL
                   name: Webinar Pendidikan
                   hostedby: Company Surya Kencana
-                  date: 20-07-2022 18:00:00
+                  performers: kotak
+                  date: 2022-07-05T09:04:43.527Z
                   city: Jakarta
                   location: (longitude and latitude)
                   details: Ini adalah description webinar bertema pendidikan
@@ -340,6 +351,23 @@ paths:
         - Event
       summary: get all events
       description: Home description
+      parameters:
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: number
+            example: 1
+        - in: query
+          name: city
+          schema:
+            type: string
+            example: malang
+        - in: query
+          name: name
+          schema:
+            type: string
+            example: festival A
       responses:
         '200':
           description: Get all events success
@@ -354,12 +382,14 @@ paths:
                     code: 200
                     message: Success get all events
                     currenttime: '2009-11-10T23:00:00.000Z'
+                    totalpage: 2
                     data:
                       - id_event: 12
                         image_url: URL
                         name: Webinar Pendidikan
                         hostedby: Company Surya Kencana
-                        date: 20-07-2022 18:00:00
+                        performers: kotak
+                        date: 2022-07-05T09:04:43.527Z
                         city: Jakarta
                         location: (longitude and latitude)
                         details: Ini adalah description webinar bertema pendidikan
@@ -407,15 +437,18 @@ paths:
                       image_url: URL
                       name: Webinar Pendidikan
                       hostedby: Company Surya Kencana
-                      date: 20-07-2022 18:00:00
+                      performer: kotak
+                      date: 2022-07-05T09:04:43.527Z
                       city: Jakarta
                       location: (longitude and latitude)
                       details: Ini adalah description webinar bertema pendidikan
                       participant:
-                        - name: Budi
-                          url: image.example.com
-                        - name: Budi
-                          url: image.example.com
+                        - id: 1
+                          name: Budi
+                          avatar: image.example.com
+                        - id: 2
+                          name: Bidu
+                          avatar: image.example.com
         '400':
           description: Failed to get events
           content:
@@ -454,7 +487,8 @@ paths:
                   image_url: URL
                   name: Webinar Pendidikan
                   hostedby: Company Surya Kencana
-                  date: 20-07-2022 18:00:00
+                  performers: kotak
+                  date: 2022-07-05T09:04:43.527Z
                   city: Jakarta
                   location: (longitude and latitude)
                   details: Ini adalah description webinar bertema pendidikan
@@ -591,7 +625,8 @@ paths:
                         image_url: URL
                         name: Webinar Pendidikan
                         hostedby: Company Surya Kencana
-                        date: 20-07-2022 18:00:00
+                        performers: kotak
+                        date: 2022-07-05T09:04:43.527Z
                         city: Jakarta
                         location: (longitude and latitude)
                         details: Ini adalah description webinar bertema pendidikan
@@ -665,7 +700,6 @@ paths:
                 description: Data comment
                 value:
                   id_event: 2
-                  id_user: 24
                   comment: Ini spesifik alamat eventnya dimana gimana ya kak?
       responses:
         '200':
@@ -832,6 +866,9 @@ components:
         name:
           type: string
           minLength: 1
+        performers:
+          type: string
+          minLength: 1
         hostedby:
           type: string
           minLength: 1
@@ -880,9 +917,6 @@ components:
       type: object
       properties:
         id_event:
-          type: number
-          minLength: 1
-        id_user:
           type: number
           minLength: 1
         comment:
