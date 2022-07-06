@@ -1,51 +1,39 @@
 package data
 
 import (
-	_event "project3/eventapp/features/events/data"
+	"project3/eventapp/features/events/data"
 	"project3/eventapp/features/participants"
-	_user "project3/eventapp/features/users/data"
 
 	"gorm.io/gorm"
 )
 
 type Participant struct {
 	gorm.Model
-	UserID  int
-	EventID int
-	Event   _event.Event
-	User    _user.User
+	UserID  int `json:"user_id" form:"user_id"`
+	EventID int `json:"event_id" form:"event_id"`
+	Event   data.Event
 }
 
-// type Event struct {
-// 	gorm.Model
-// 	Name        string    `json:"name" form:"name"`
-// 	Detail      string    `json:"detail" form:"detail"`
-// 	URL         string    `json:"url" form:"url"`
-// 	Date        time.Time `json:"time" form:"time"`
-// 	Performers  string    `json:"performers" form:"performers"`
-// 	HostedBy    string    `json:"hostedby" form:"hostedby"`
-// 	City        string    `json:"city" form:"city"`
-// 	Location    string    `json:"location" form:"location"`
-// 	UserID      int
-// 	User        User
-// 	Participant []Participant
-// }
-
-// type User struct {
-// 	gorm.Model
-// 	Name     string
-// 	Email    string
-// 	Password string
-// 	Event    []Event
-// }
+func fromCore(core participants.Core) Participant {
+	return Participant{
+		UserID:  core.UserID,
+		EventID: core.EventID,
+	}
+}
 
 func (data *Participant) toCore() participants.Core {
 	return participants.Core{
-		ID:        int(data.ID),
-		IdEvent:   data.EventID,
-		IdUser:    data.EventID,
-		CreatedAt: data.CreatedAt,
-		UpdatedAt: data.UpdatedAt,
+		ID: int(data.EventID),
+		Event: participants.Event{
+			Url:         data.Event.URL,
+			Name:        data.Event.Name,
+			HostedBy:    data.Event.HostedBy,
+			Performers:  data.Event.Performers,
+			Date:        data.Event.Date,
+			City:        data.Event.City,
+			Location:    data.Event.Location,
+			EventDetail: data.Event.Detail,
+		},
 	}
 }
 

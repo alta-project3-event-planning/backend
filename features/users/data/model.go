@@ -10,7 +10,7 @@ type User struct {
 	gorm.Model
 	URL      string `json:"url" form:"url"`
 	Name     string `json:"name" form:"name"`
-	Email    string `json:"email" form:"email"`
+	Email    string `json:"email" form:"email" gorm:"unique"`
 	Password string `json:"password" form:"password"`
 }
 
@@ -29,13 +29,13 @@ func (data *User) toCore() users.Core {
 
 }
 
-func toCoreList(data []User) []users.Core {
-	result := []users.Core{}
-	for key := range data {
-		result = append(result, data[key].toCore())
-	}
-	return result
-}
+// func toCoreList(data []User) []users.Core {
+// 	result := []users.Core{}
+// 	for key := range data {
+// 		result = append(result, data[key].toCore())
+// 	}
+// 	return result
+// }
 
 func fromCore(core users.Core) User {
 	return User{

@@ -24,20 +24,20 @@ func NewUserHandler(business users.Business) *UserHandler {
 	}
 }
 
-func (h *UserHandler) GetAll(c echo.Context) error {
-	limit := c.QueryParam("limit")
-	offset := c.QueryParam("offset")
-	limitint, _ := strconv.Atoi(limit)
-	offsetint, _ := strconv.Atoi(offset)
-	result, err := h.userBusiness.GetAllData(limitint, offsetint)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError,
-			helper.ResponseFailed("failed to get all data"))
-	}
+// func (h *UserHandler) GetAll(c echo.Context) error {
+// 	limit := c.QueryParam("limit")
+// 	offset := c.QueryParam("offset")
+// 	limitint, _ := strconv.Atoi(limit)
+// 	offsetint, _ := strconv.Atoi(offset)
+// 	result, err := h.userBusiness.GetAllData(limitint, offsetint)
+// 	if err != nil {
+// 		return c.JSON(http.StatusInternalServerError,
+// 			helper.ResponseFailed("failed to get all data"))
+// 	}
 
-	return c.JSON(http.StatusOK,
-		helper.ResponseSuccessWithData("success", _responseUser.FromCoreList(result)))
-}
+// 	return c.JSON(http.StatusOK,
+// 		helper.ResponseSuccessWithData("success", _responseUser.FromCoreList(result)))
+// }
 
 func (h *UserHandler) GetDataById(c echo.Context) error {
 	userID_token, errToken := middlewares.ExtractToken(c)

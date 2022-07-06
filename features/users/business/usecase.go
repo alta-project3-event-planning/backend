@@ -17,10 +17,10 @@ func NewUserBusiness(usrData users.Data) users.Business {
 	}
 }
 
-func (uc *userUseCase) GetAllData(limit, offset int) (response []users.Core, err error) {
-	resp, errData := uc.userData.SelectData(limit, offset)
-	return resp, errData
-}
+// func (uc *userUseCase) GetAllData(limit, offset int) (response []users.Core, err error) {
+// 	resp, errData := uc.userData.SelectData(limit, offset)
+// 	return resp, errData
+// }
 
 func (uc *userUseCase) GetDataById(id int) (response users.Core, err error) {
 	resp, errData := uc.userData.SelectDataById(id)
@@ -56,12 +56,15 @@ func (uc *userUseCase) DeleteData(id int) (row int, err error) {
 
 func (uc *userUseCase) UpdateData(userReq users.Core, id int) (row int, err error) {
 	updateMap := make(map[string]interface{})
+	
 	if userReq.Name != "" {
 		updateMap["name"] = &userReq.Name
 	}
+	
 	if userReq.Email != "" {
 		updateMap["email"] = &userReq.Email
 	}
+
 	if userReq.Password != "" {
 		hash, err := bcrypt.GenerateFromPassword([]byte(userReq.Password), bcrypt.DefaultCost)
 		if err != nil {
