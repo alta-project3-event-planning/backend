@@ -1,21 +1,13 @@
 package response
 
-import (
-	"project3/eventapp/features/users"
-)
-
 type user struct {
-	ID       int    `json:"id" form:"id"`
-	Name     string `json:"name" form:"name"`
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
+	ID    int    `json:"id" form:"id"`
+	Token string `json:"token" form:"token"`
 }
 
-func FromCore(data users.Core) user {
+func ToResponse(id int, token string) user {
 	return user{
-		ID:       data.ID,
-		Name:     data.Name,
-		Email:    data.Email,
-		Password: data.Password,
+		ID:    id,
+		Token: token,
 	}
 }

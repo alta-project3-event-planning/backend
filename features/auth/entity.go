@@ -14,7 +14,7 @@ type Core struct {
 }
 
 type Business interface {
-	Login(data Core) (token string, Name string, err error)
+	Login(data Core) (token string, ID int, err error)
 }
 
 type Data interface {

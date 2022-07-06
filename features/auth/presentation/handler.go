@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"project3/eventapp/features/auth"
 	"project3/eventapp/features/auth/presentation/request"
+	"project3/eventapp/features/auth/presentation/response"
+	"project3/eventapp/helper"
 
 	"github.com/labstack/echo/v4"
 )
@@ -28,16 +30,13 @@ func (h *AuthHandler) Login(c echo.Context) error {
 	}
 
 	authCore := request.ToCore(reqBody)
-	result, name, err := h.userBusiness.Login(authCore)
+	token, id, err := h.userBusiness.Login(authCore)
 
+	result := response.ToResponse(id, token)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed to get token data" + err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success",
-		"name":    name,
-		"token":   result,
-	})
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("login success", result))
 }

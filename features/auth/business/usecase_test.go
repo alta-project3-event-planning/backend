@@ -11,7 +11,7 @@ import (
 type mockAuthDataSucsess struct{}
 
 func (mock mockAuthDataSucsess) FindUser(email string) (resp auth.Core, err error) {
-	return auth.Core{ID: 1, Name: "alta", Email: "alta@mail.id", Password: "$2a$10$2iESuHQMd8NM2q245RP40esJCpID8o/SyfLiNI2.mHGoGEojEoUe."}, nil
+	return auth.Core{ID: 1, Name: "alta", Email: "alta@mail.id", Password: "$2a$10$36DHlayBJtBvYZfGhP/bMOuU3zX9O7sz4ohSA1a6ikQIMVz05fobW"}, nil
 }
 
 type mockAuthDataFailed struct{}
@@ -39,7 +39,7 @@ func TestLogin(t *testing.T) {
 		newUser := auth.Core{
 			Name:     "alta",
 			Email:    "abc@mail.id",
-			Password: "qwerty",
+			Password: "123",
 		}
 		resultToken, resultName, err := authBusiness.Login(newUser)
 		assert.NotNil(t, err)

@@ -42,9 +42,7 @@ func NewUserHandler(business users.Business) *UserHandler {
 func (h *UserHandler) GetDataById(c echo.Context) error {
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get user id",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get user id"))
 	}
 
 	result, err := h.userBusiness.GetDataById(userID_token)
@@ -77,9 +75,7 @@ func (h *UserHandler) Insert(c echo.Context) error {
 func (h *UserHandler) Delete(c echo.Context) error {
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get user id",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get user id"))
 	}
 	_, err := h.userBusiness.DeleteData(userID_token)
 	if err != nil {
@@ -93,9 +89,7 @@ func (h *UserHandler) Delete(c echo.Context) error {
 func (h *UserHandler) Update(c echo.Context) error {
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "failed to get user id",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get user id"))
 	}
 
 	userReq := _requestUser.User{}
