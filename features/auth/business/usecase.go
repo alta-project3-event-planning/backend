@@ -17,16 +17,16 @@ func NewAuthBusiness(usrData auth.Data) auth.Business {
 	}
 }
 
-func (uc *authUseCase) Login(data auth.Core) (string, string, error) {
+func (uc *authUseCase) Login(data auth.Core) (string, int, error) {
 	response, errFind := uc.userData.FindUser(data.Email)
 	if errFind != nil {
-		return "", "", errFind
+		return "", 0, errFind
 	}
 	errCompare := bcrypt.CompareHashAndPassword([]byte(response.Password), []byte(data.Password))
 	if errCompare != nil {
-		return "", "", errCompare
+		return "", 0, errCompare
 	}
 	token, err := middlewares.CreateToken(int(response.ID))
 
-	return token, response.Name, err
+	return token, response.ID, err
 }
