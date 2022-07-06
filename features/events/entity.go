@@ -33,7 +33,7 @@ type Business interface {
 	InsertEvent(dataReq Core) (err error)
 	DeleteEventByID(id int, userId int) (err error)
 	UpdateEventByID(dataReq Core, id int, userId int) (err error)
-	GetEventByUserID(id_user, limit, offset int) (data []Core, err error)
+	GetEventByUserID(id_user, limit, offset int) (data []Core, total int64, err error)
 }
 
 type Data interface {
@@ -42,6 +42,6 @@ type Data interface {
 	InsertData(dataReq Core) (err error)
 	DeleteDataByID(id int, userId int) (err error)
 	UpdateDataByID(dataReq map[string]interface{}, id int, userId int) (err error)
-	SelectDataByUserID(id_user, limit, offset int) (data []Core, err error)
+	SelectDataByUserID(id_user, limit, offset int) (data []Core, total int64, err error)
 	SelectParticipantData(id_event int) (data []Participant, err error)
 }

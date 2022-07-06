@@ -173,21 +173,20 @@ func (h *EventHandler) UpdateData(c echo.Context) error {
 
 func (h *EventHandler) GetEventByUser(c echo.Context) error {
 
-	limit := c.QueryParam("limit")
-	offset := c.QueryParam("offset")
-	limitint, _ := strconv.Atoi(limit)
-	offsetint, _ := strconv.Atoi(offset)
+	page := c.QueryParam("page")
+	pageint, _ := strconv.Atoi(page)
+	limitint := 12
 
 	id_user, errToken := middlewares.ExtractToken(c)
 	if errToken != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get user id"))
 	}
 
-	result, err := h.eventBusiness.GetEventByUserID(id_user, limitint, offsetint)
+	result, total, err := h.eventBusiness.GetEventByUserID(id_user, limitint, pageint)
 
 	respons := _response_event.FromCoreList(result)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get all my events"))
 	}
-	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("success get all my events", respons))
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithDataPage("success get all my events", total, respons))
 }
