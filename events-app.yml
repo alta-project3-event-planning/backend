@@ -275,6 +275,7 @@ paths:
                     code: 200
                     message: Success get all myevents
                     currenttime: "2009-11-10T23:00:00.000Z"
+                    totalpage: 1 
                     data:
                       - id_event: 23
                         image_url: URL
@@ -894,6 +895,8 @@ components:
           type: string
         currenttime:
           type: string
+        totalpage:
+          type: number
         data:
           type: array
           items:
