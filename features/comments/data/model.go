@@ -19,9 +19,13 @@ type Comment struct {
 
 func (data *Comment) toCore() comments.Core {
 	return comments.Core{
-		ID:        int(data.ID),
-		EventID:   data.EventID,
-		UserID:    data.UserID,
+		ID:      int(data.ID),
+		EventID: data.EventID,
+		UserID:  data.UserID,
+		User: comments.User{
+			Name:   data.User.Name,
+			Avatar: data.User.URL,
+		},
 		Comment:   data.Comment,
 		CreatedAt: data.CreatedAt,
 		UpdatedAt: data.UpdatedAt,

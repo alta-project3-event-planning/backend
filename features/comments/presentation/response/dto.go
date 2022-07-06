@@ -7,12 +7,10 @@ import (
 
 type Comment struct {
 	ID        int       `json:"id" form:"id"`
-	UserID    int       `json:"user_id" form:"user_id"`
 	Name      string    `json:"name" form:"name"`
+	Avatar    string    `json:"avatar" form:"avatar"`
 	Comment   string    `json:"comment" form:"comment"`
-	CreatedAt time.Time `json:"created_at" form:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" form:"updated_at"`
-	User      []User
+	UpdatedAt time.Time `json:"date_time" form:"date_time"`
 }
 
 type Event struct {
@@ -37,9 +35,11 @@ type User struct {
 
 func FromCore(data comments.Core) Comment {
 	return Comment{
-		ID:      data.ID,
-		Name:    data.User.Name,
-		Comment: data.Comment,
+		ID:        data.ID,
+		Name:      data.User.Name,
+		Avatar:    data.User.Avatar,
+		Comment:   data.Comment,
+		UpdatedAt: data.UpdatedAt,
 	}
 }
 

@@ -33,17 +33,18 @@ type Event struct {
 }
 
 type User struct {
-	ID    int
-	Name  string
-	Email string
+	ID     int
+	Name   string
+	Email  string
+	Avatar string
 }
 
 type Business interface {
 	AddComment(data Core) (row int, err error)
-	GetCommentByIdEvent(limit, offset, event_id int) (data []Core, err error)
+	GetCommentByIdEvent(offset, event_id int) (data []Core, err error)
 }
 
 type Data interface {
 	Add(data Core) (row int, err error)
-	GetComment(limit, offset, event_id int) (data []Core, err error)
+	GetComment(offset, event_id int) (data []Core, err error)
 }

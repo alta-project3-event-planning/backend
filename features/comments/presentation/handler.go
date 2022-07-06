@@ -54,13 +54,14 @@ func (h *CommentHandler) Add(c echo.Context) error {
 
 func (h *CommentHandler) Get(c echo.Context) error {
 	eventId, _ := strconv.Atoi(c.Param("id"))
-	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+	// limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
+	page := offset * 5
 
-	result, err := h.commentBusiness.GetCommentByIdEvent(limit, offset, eventId)
+	result, err := h.commentBusiness.GetCommentByIdEvent(page, eventId)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get all data"))
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed get all comment events"))
 	}
 	respons := _response_comment.FromCoreList(result)
-	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("Success get all events", respons))
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("success get all comment events", respons))
 }

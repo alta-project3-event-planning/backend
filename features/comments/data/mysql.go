@@ -25,10 +25,9 @@ func (repo *mysqlCommentRepository) Add(data comments.Core) (row int, err error)
 	return int(result.RowsAffected), nil
 }
 
-func (repo *mysqlCommentRepository) GetComment(limit, offset, eventId int) (response []comments.Core, err error) {
+func (repo *mysqlCommentRepository) GetComment(offset, eventId int) (response []comments.Core, err error) {
 	var dataComment []Comment
-
-	result := repo.db.Where("event_id = ?", eventId).Preload("User").Preload("Event").Limit(limit).Offset(offset).Find(&dataComment).Order("id DESC")
+	result := repo.db.Order("id DESC").Where("event_id = ?", eventId).Preload("User").Limit(5).Offset(offset).Find(&dataComment)
 
 	if result.Error != nil {
 		return []comments.Core{}, result.Error

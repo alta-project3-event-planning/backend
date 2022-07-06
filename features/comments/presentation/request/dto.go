@@ -5,8 +5,8 @@ import (
 )
 
 type Comment struct {
-	EventID int    `json:"event_id" form:"event_id"`
-	UserID  int    `json:"user_id" form:"user_id"`
+	EventID int    `json:"id_event" form:"id_event"`
+	UserID  int    `json:"id_user" form:"id_user"`
 	Comment string `json:"comment" form:"comment"`
 }
 
