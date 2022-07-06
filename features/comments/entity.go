@@ -6,8 +6,8 @@ import (
 
 type Core struct {
 	ID        int
-	IdEvent   int
-	IdUser    int
+	EventID   int
+	UserID    int
 	Comment   string
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -28,7 +28,7 @@ type Event struct {
 	HostedBy    string
 	City        string
 	Location    string
-	IDUser      int
+	UserID      int
 	User        User
 }
 
@@ -40,8 +40,10 @@ type User struct {
 
 type Business interface {
 	AddComment(data Core) (row int, err error)
+	GetCommentByIdEvent(limit, offset, event_id int) (data []Core, err error)
 }
 
 type Data interface {
 	Add(data Core) (row int, err error)
+	GetComment(limit, offset, event_id int) (data []Core, err error)
 }
