@@ -178,6 +178,7 @@ paths:
               userData:
                 description: Data user
                 value:
+                  avatar: example.com
                   name: Angga pramaja
                   email: angga@gmail.com
                   password: ituangga
@@ -255,12 +256,7 @@ paths:
         - JWTAuth: []
       parameters:
         - in: query
-          name: limit
-          schema:
-            type: number
-            example: 1
-        - in: query
-          name: offset
+          name: page
           schema:
             type: number
             example: 1
@@ -283,6 +279,7 @@ paths:
                         image_url: URL
                         name: Webinar Pendidikan
                         hostedby: Company Surya Kencana
+                        performers: kotak
                         date: 2022-07-05T09:04:43.527Z
                         city: Jakarta
                         location: (longitude and latitude)
@@ -319,6 +316,7 @@ paths:
                   image_url: URL
                   name: Webinar Pendidikan
                   hostedby: Company Surya Kencana
+                  performers: kotak
                   date: 2022-07-05T09:04:43.527Z
                   city: Jakarta
                   location: (longitude and latitude)
@@ -355,13 +353,7 @@ paths:
       description: Home description
       parameters:
         - in: query
-          name: limit
-          required: true
-          schema:
-            type: number
-            example: 1
-        - in: query
-          name: offset
+          name: page
           required: true
           schema:
             type: number
@@ -390,11 +382,13 @@ paths:
                     code: 200
                     message: Success get all events
                     currenttime: '2009-11-10T23:00:00.000Z'
+                    totalpage: 2
                     data:
                       - id_event: 12
                         image_url: URL
                         name: Webinar Pendidikan
                         hostedby: Company Surya Kencana
+                        performers: kotak
                         date: 2022-07-05T09:04:43.527Z
                         city: Jakarta
                         location: (longitude and latitude)
@@ -443,6 +437,7 @@ paths:
                       image_url: URL
                       name: Webinar Pendidikan
                       hostedby: Company Surya Kencana
+                      performer: kotak
                       date: 2022-07-05T09:04:43.527Z
                       city: Jakarta
                       location: (longitude and latitude)
@@ -450,10 +445,10 @@ paths:
                       participant:
                         - id: 1
                           name: Budi
-                          url: image.example.com
+                          avatar: image.example.com
                         - id: 2
                           name: Bidu
-                          url: image.example.com
+                          avatar: image.example.com
         '400':
           description: Failed to get events
           content:
@@ -492,6 +487,7 @@ paths:
                   image_url: URL
                   name: Webinar Pendidikan
                   hostedby: Company Surya Kencana
+                  performers: kotak
                   date: 2022-07-05T09:04:43.527Z
                   city: Jakarta
                   location: (longitude and latitude)
@@ -629,6 +625,7 @@ paths:
                         image_url: URL
                         name: Webinar Pendidikan
                         hostedby: Company Surya Kencana
+                        performers: kotak
                         date: 2022-07-05T09:04:43.527Z
                         city: Jakarta
                         location: (longitude and latitude)
@@ -703,7 +700,6 @@ paths:
                 description: Data comment
                 value:
                   id_event: 2
-                  id_user: 24
                   comment: Ini spesifik alamat eventnya dimana gimana ya kak?
       responses:
         '200':
@@ -870,6 +866,9 @@ components:
         name:
           type: string
           minLength: 1
+        performers:
+          type: string
+          minLength: 1
         hostedby:
           type: string
           minLength: 1
@@ -918,9 +917,6 @@ components:
       type: object
       properties:
         id_event:
-          type: number
-          minLength: 1
-        id_user:
           type: number
           minLength: 1
         comment:
