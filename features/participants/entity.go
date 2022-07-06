@@ -8,7 +8,6 @@ type Core struct {
 	IdEvent   int
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	User      User
 	Event     Event
 }
 
@@ -26,19 +25,14 @@ type Event struct {
 	City        string
 	Location    string
 	IDUser      int
-	User        User
-}
-
-type User struct {
-	ID    int
-	Name  string
-	Email string
 }
 
 type Business interface {
-	AddParticipant(data Core) (row int, err error)
+	AddParticipant(data Core) error
+	GetAllEventbyParticipant(idUser int) (data []Event, err error)
 }
 
 type Data interface {
-	Add(data Core) (row int, err error)
+	Add(data Core) error
+	SelectDataEvent(idUser int) (data []Event, err error)
 }
