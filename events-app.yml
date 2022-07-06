@@ -37,7 +37,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/requestLogin'
+              $ref: "#/components/schemas/requestLogin"
             examples:
               userData:
                 description: Data user
@@ -45,12 +45,12 @@ paths:
                   email: alta@alterra.id
                   password: inipassword
       responses:
-        '200':
+        "200":
           description: Login Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseLoginSuccess'
+                $ref: "#/components/schemas/responseLoginSuccess"
               examples:
                 responseData:
                   description: response success
@@ -61,12 +61,12 @@ paths:
                       id: 1
                       token: >-
                         eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co
-        '400':
+        "400":
           description: Login Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponseLogin'
+                $ref: "#/components/schemas/failedResponseLogin"
               examples:
                 responseData:
                   description: response failed
@@ -83,7 +83,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/requestRegister'
+              $ref: "#/components/schemas/requestRegister"
             examples:
               userData:
                 description: Data user
@@ -92,24 +92,24 @@ paths:
                   email: budi@gmail.com
                   password: inibudi
       responses:
-        '200':
+        "200":
           description: Register Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseRegisterSuccess'
+                $ref: "#/components/schemas/responseRegisterSuccess"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Register Success
-        '400':
+        "400":
           description: Register Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponseRegister'
+                $ref: "#/components/schemas/failedResponseRegister"
               examples:
                 responseData:
                   description: response failed
@@ -123,14 +123,14 @@ paths:
       summary: profile user
       description: Profile user description
       security:
-        - JWTAuth: [] 
+        - JWTAuth: []
       responses:
-        '200':
+        "200":
           description: Get Profile Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithData'
+                $ref: "#/components/schemas/responseWithData"
               examples:
                 responseData:
                   description: response success
@@ -142,12 +142,12 @@ paths:
                       avatar: URL File
                       name: budi
                       email: budi@gmail.com
-        '400':
+        "400":
           description: Failed Get Profile
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -161,7 +161,7 @@ paths:
       summary: update user
       description: Updated user description
       security:
-        - JWTAuth: [] 
+        - JWTAuth: []
       parameters:
         - in: path
           name: id
@@ -173,7 +173,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/requestUpdateUser'
+              $ref: "#/components/schemas/requestUpdateUser"
             examples:
               userData:
                 description: Data user
@@ -183,24 +183,24 @@ paths:
                   email: angga@gmail.com
                   password: ituangga
       responses:
-        '200':
+        "200":
           description: Update Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Updated Success
-        '400':
+        "400":
           description: Failed Updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -222,24 +222,24 @@ paths:
             type: number
             example: 1
       responses:
-        '200':
+        "200":
           description: Delete Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Delete Success
-        '400':
+        "400":
           description: Failed Deleted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -261,19 +261,19 @@ paths:
             type: number
             example: 1
       responses:
-        '200':
+        "200":
           description: Get all myevents success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseEvent'
+                $ref: "#/components/schemas/responseEvent"
               examples:
                 responseHome:
                   description: response myevents success
                   value:
                     code: 200
                     message: Success get all myevents
-                    currenttime: '2009-11-10T23:00:00.000Z'
+                    currenttime: "2009-11-10T23:00:00.000Z"
                     data:
                       - id_event: 23
                         image_url: URL
@@ -284,12 +284,12 @@ paths:
                         city: Jakarta
                         location: (longitude and latitude)
                         details: Ini adalah description webinar bertema pendidikan
-        '400':
+        "400":
           description: Failed to get all myevents
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response home failed
@@ -308,7 +308,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/requestEvent'
+              $ref: "#/components/schemas/requestEvent"
             examples:
               eventData:
                 description: Create event description by user
@@ -322,24 +322,24 @@ paths:
                   location: (longitude and latitude)
                   details: Ini adalah description webinar bertema pendidikan
       responses:
-        '200':
+        "200":
           description: Success to create event
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Success insert event
-        '400':
+        "400":
           description: Failed to create event
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -369,19 +369,19 @@ paths:
             type: string
             example: festival A
       responses:
-        '200':
+        "200":
           description: Get all events success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseEvent'
+                $ref: "#/components/schemas/responseEvent"
               examples:
                 responseHome:
                   description: response home success
                   value:
                     code: 200
                     message: Success get all events
-                    currenttime: '2009-11-10T23:00:00.000Z'
+                    currenttime: "2009-11-10T23:00:00.000Z"
                     totalpage: 2
                     data:
                       - id_event: 12
@@ -393,12 +393,12 @@ paths:
                         city: Jakarta
                         location: (longitude and latitude)
                         details: Ini adalah description webinar bertema pendidikan
-        '400':
+        "400":
           description: Failed to get all events
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response home failed
@@ -419,19 +419,19 @@ paths:
             type: number
             example: 1
       responses:
-        '200':
+        "200":
           description: Get events success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseEvent'
+                $ref: "#/components/schemas/responseEvent"
               examples:
                 responseData:
                   description: response event success
                   value:
                     code: 200
                     message: Success get event
-                    currenttime: '2009-11-10T23:00:00.000Z'
+                    currenttime: "2009-11-10T23:00:00.000Z"
                     data:
                       id_event: 10
                       image_url: URL
@@ -449,12 +449,12 @@ paths:
                         - id: 2
                           name: Bidu
                           avatar: image.example.com
-        '400':
+        "400":
           description: Failed to get events
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response event failed
@@ -479,7 +479,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/requestEvent'
+              $ref: "#/components/schemas/requestEvent"
             examples:
               eventData:
                 description: Update event Description by user
@@ -493,24 +493,24 @@ paths:
                   location: (longitude and latitude)
                   details: Ini adalah description webinar bertema pendidikan
       responses:
-        '200':
+        "200":
           description: Update Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Success update event
-        '400':
+        "400":
           description: Failed Updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -532,24 +532,24 @@ paths:
             type: number
             example: 1
       responses:
-        '200':
+        "200":
           description: Delete Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Delete event success
-        '400':
+        "400":
           description: Failed Deleted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -568,31 +568,31 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/requestJoin'
+              $ref: "#/components/schemas/requestJoin"
             examples:
               joinData:
                 description: Data join
                 value:
                   id_event: 2
       responses:
-        '200':
+        "200":
           description: Join Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Success insert event participation
-        '400':
+        "400":
           description: Failed Join
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -607,19 +607,19 @@ paths:
       security:
         - JWTAuth: []
       responses:
-        '200':
+        "200":
           description: Get all events participation success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseEvent'
+                $ref: "#/components/schemas/responseEvent"
               examples:
                 responseJoin:
                   description: response event participation success
                   value:
                     code: 200
                     message: Success get all your events
-                    currenttime: '2009-11-10T23:00:00.000Z'
+                    currenttime: "2009-11-10T23:00:00.000Z"
                     data:
                       - id_participant: 23
                         image_url: URL
@@ -630,12 +630,12 @@ paths:
                         city: Jakarta
                         location: (longitude and latitude)
                         details: Ini adalah description webinar bertema pendidikan
-        '400':
+        "400":
           description: Failed to get all events
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseJoin:
                   description: failed response event participation success
@@ -658,24 +658,24 @@ paths:
             type: number
             example: 1
       responses:
-        '200':
+        "200":
           description: Delete Participation Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response success
                   value:
                     code: 200
                     message: Delete Success
-        '400':
+        "400":
           description: Failed Deleted Participation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: response failed
@@ -694,7 +694,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/requesCreateComment'
+              $ref: "#/components/schemas/requesCreateComment"
             examples:
               commentData:
                 description: Data comment
@@ -702,24 +702,24 @@ paths:
                   id_event: 2
                   comment: Ini spesifik alamat eventnya dimana gimana ya kak?
       responses:
-        '200':
+        "200":
           description: Comment Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseWithNoData'
+                $ref: "#/components/schemas/responseWithNoData"
               examples:
                 responseData:
                   description: response comment success
                   value:
                     code: 200
                     message: Success insert your comment
-        '400':
+        "400":
           description: Failed Comment
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseData:
                   description: failed response comment
@@ -742,12 +742,12 @@ paths:
             type: number
             example: 1
       responses:
-        '200':
+        "200":
           description: Get all comment events success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responseComment'
+                $ref: "#/components/schemas/responseComment"
               examples:
                 responseComment:
                   description: response comment event success
@@ -755,15 +755,18 @@ paths:
                     code: 200
                     message: Success get all comment events
                     data:
-                      - id_comment: 12
+                      - id: 12
                         name: Angga
+                        avatar: https://soundfest.site/image/user.jpg
                         comment: Ini spesifik alamat eventnya dimana gimana ya kak?
-        '400':
+                        updated_at: 2022-07-05T17:43:30.097Z
+                    totalpage: 1
+        "400":
           description: Failed to get all comment events
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failedResponse'
+                $ref: "#/components/schemas/failedResponse"
               examples:
                 responseComment:
                   description: failed response comment event success
