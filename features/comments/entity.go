@@ -45,6 +45,6 @@ type Business interface {
 }
 
 type Data interface {
-	Add(data Core) (row int, err error)
+	Insert(data Core) (row int, err error)
 	GetComment(limit, offset, event_id int) (data []Core, count int64, err error)
 }

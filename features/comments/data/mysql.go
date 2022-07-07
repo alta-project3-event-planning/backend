@@ -16,13 +16,13 @@ func NewCommentRepository(conn *gorm.DB) comments.Data {
 	}
 }
 
-func (repo *mysqlCommentRepository) Add(data comments.Core) (row int, err error) {
+func (repo *mysqlCommentRepository) Insert(data comments.Core) (row int, err error) {
 	commentData := fromCore(data)
 	result := repo.db.Create(&commentData)
 	if result.Error != nil {
 		return 0, result.Error
 	}
-	return int(result.RowsAffected), nil
+	return int(result.RowsAffected), result.Error
 }
 
 func (repo *mysqlCommentRepository) GetComment(limit, offset, eventId int) (response []comments.Core, total int64, err error) {
