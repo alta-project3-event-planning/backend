@@ -60,9 +60,17 @@ func (h *EventHandler) InsertData(c echo.Context) error {
 
 	event := _request_event.Event{}
 	err_bind := c.Bind(&event)
+
 	if err_bind != nil {
-		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("success insert event"))
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed bind data"))
 	}
+
+	layout_time := "2006-01-02 15:04:05"
+	DateTime, errDate := time.Parse(layout_time, event.Date)
+	if errDate != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed format date"))
+	}
+	event.DateTime = DateTime
 
 	fileData, fileInfo, fileErr := c.Request().FormFile("file")
 	if fileErr == http.ErrMissingFile || fileErr != nil {
