@@ -61,7 +61,7 @@ func (h *EventHandler) InsertData(c echo.Context) error {
 	event := _request_event.Event{}
 	err_bind := c.Bind(&event)
 	if err_bind != nil {
-		return c.JSON(http.StatusInternalServerError, helper.ResponseSuccessNoData("success insert event"))
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("success insert event"))
 	}
 
 	fileData, fileInfo, fileErr := c.Request().FormFile("file")

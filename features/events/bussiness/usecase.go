@@ -60,6 +60,9 @@ func (uc *eventUseCase) UpdateEventByID(eventReq events.Core, id int, userId int
 	if eventReq.City != "" {
 		updateMap["city"] = &eventReq.City
 	}
+	if !eventReq.Date.IsZero() {
+		updateMap["date"] = &eventReq.Date
+	}
 	if eventReq.Location != "" {
 		updateMap["location"] = &eventReq.Location
 	}
@@ -67,7 +70,7 @@ func (uc *eventUseCase) UpdateEventByID(eventReq events.Core, id int, userId int
 		updateMap["performers"] = &eventReq.Performers
 	}
 	if eventReq.HostedBy != "" {
-		updateMap["hostedby"] = &eventReq.HostedBy
+		updateMap["hosted_by"] = &eventReq.HostedBy
 	}
 	if eventReq.Url != "" {
 		updateMap["url"] = &eventReq.Url

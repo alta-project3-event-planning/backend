@@ -154,7 +154,6 @@ paths:
                   value:
                     code: 400
                     message: Failed to get your data
-  /users/{id}:
     put:
       tags:
         - User
@@ -162,26 +161,17 @@ paths:
       description: Updated user description
       security:
         - JWTAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: number
-            example: 1
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/components/schemas/requestUpdateUser"
-            examples:
-              userData:
-                description: Data user
-                value:
-                  avatar: example.com
-                  name: Angga pramaja
-                  email: angga@gmail.com
-                  password: ituangga
+            example:            
+              description: Data user
+              value:
+                name: Angga pramaja
+                email: angga@gmail.com
+                password: ituangga
       responses:
         "200":
           description: Update Success
@@ -214,13 +204,6 @@ paths:
       description: Delete user description
       security:
         - JWTAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: number
-            example: 1
       responses:
         "200":
           description: Delete Success
@@ -308,20 +291,19 @@ paths:
         - JWTAuth: []
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/components/schemas/requestEvent"
-            examples:
+            example:
               eventData:
                 description: Create event description by user
                 value:
-                  image_url: URL
                   name: Webinar Pendidikan
                   hostedby: Company Surya Kencana
                   performers: kotak
                   date: 2022-07-05T09:04:43.527Z
                   city: Jakarta
-                  location: (longitude and latitude)
+                  location: 1.2,1.5
                   details: Ini adalah description webinar bertema pendidikan
       responses:
         "200":
@@ -479,7 +461,7 @@ paths:
             example: 1
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/components/schemas/requestEvent"
             examples:
@@ -743,6 +725,12 @@ paths:
           schema:
             type: number
             example: 1
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: number
+            example: 1
       responses:
         "200":
           description: Get all comment events success
@@ -814,6 +802,10 @@ components:
           type: string
     requestRegister:
       type: object
+      required:
+        - name
+        - email
+        - password
       properties:
         name:
           type: string
@@ -854,6 +846,10 @@ components:
     requestUpdateUser:
       type: object
       properties:
+        file:
+          type: string
+          format: binary
+          description: "allowed file extension: jpg, png, jpeg && size <= 1050000 byte"
         name:
           type: string
           minLength: 1
@@ -865,9 +861,20 @@ components:
           minLength: 1
     requestEvent:
       type: object
+      required:
+        - file
+        - name
+        - performers
+        - hostedby
+        - date
+        - city
+        - location
+        - details
       properties:
-        image_url:
+        file:
           type: string
+          format: binary
+          description: "allowed file extension: jpg, png, jpeg && size <= 1050000 byte"
         name:
           type: string
           minLength: 1
@@ -881,8 +888,10 @@ components:
           type: string
         city:
           type: string
+          minLength: 1
         location:
           type: string
+          minLength: 1
         details:
           type: string
           minLength: 1
