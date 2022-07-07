@@ -2,6 +2,7 @@ package presentation
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"project3/eventapp/features/events"
 	"time"
@@ -62,6 +63,7 @@ func (h *EventHandler) InsertData(c echo.Context) error {
 	err_bind := c.Bind(&event)
 
 	if err_bind != nil {
+		log.Print(err_bind)
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed bind data"))
 	}
 
