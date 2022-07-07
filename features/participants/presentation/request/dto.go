@@ -3,8 +3,8 @@ package request
 import "project3/eventapp/features/participants"
 
 type Participant struct {
-	UserID  int `json:"user_id" form:"user_id"`
-	EventID int `json:"event_id" form:"event_id"`
+	UserID  int `json:"id_user" form:"id_user"`
+	EventID int `json:"id_event" form:"id_event"`
 }
 
 func ToCore(partReq Participant) participants.Core {

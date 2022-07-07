@@ -29,28 +29,30 @@ func TestLogin(t *testing.T) {
 			Email:    "alta@mail.id",
 			Password: "123",
 		}
-		resultToken, result, err := authBusiness.Login(newUser)
+		resultToken, resultID, err := authBusiness.Login(newUser)
 		assert.Nil(t, err)
 		assert.NotNil(t, resultToken)
-		assert.Equal(t, 1, result)
+		assert.Equal(t, 1, resultID)
 	})
 
 	t.Run("Test Login email not found", func(t *testing.T) {
 		authBusiness := NewAuthBusiness(mockAuthDataFailed{})
 		newUser := auth.Core{
+			ID:       1,
 			Name:     "alta",
 			Email:    "abc@mail.id",
 			Password: "123",
 		}
-		resultToken, result, err := authBusiness.Login(newUser)
+		resultToken, resultID, err := authBusiness.Login(newUser)
 		assert.NotNil(t, err)
 		assert.Equal(t, "", resultToken)
-		assert.Equal(t, 0, result)
+		assert.Equal(t, 0, resultID)
 	})
 
 	t.Run("Test Login Wrong Pass", func(t *testing.T) {
 		authBusiness := NewAuthBusiness(mockAuthDataFailed{})
 		newUser := auth.Core{
+			ID:       1,
 			Name:     "alta",
 			Email:    "alta@mail.id",
 			Password: "qwert1",

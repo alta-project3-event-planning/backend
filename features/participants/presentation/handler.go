@@ -32,7 +32,7 @@ func (h *ParticipantHandler) Joined(c echo.Context) error {
 	participant := _request_participant.Participant{}
 	err_bind := c.Bind(&participant)
 	if err_bind != nil {
-		return c.JSON(http.StatusInternalServerError, helper.ResponseSuccessNoData("success insert participant"))
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("success insert participant"))
 	}
 
 	participantCore := _request_participant.ToCore(participant)

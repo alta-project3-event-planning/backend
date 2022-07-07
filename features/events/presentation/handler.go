@@ -2,6 +2,7 @@ package presentation
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"project3/eventapp/features/events"
 	"time"
@@ -60,9 +61,18 @@ func (h *EventHandler) InsertData(c echo.Context) error {
 
 	event := _request_event.Event{}
 	err_bind := c.Bind(&event)
+
 	if err_bind != nil {
-		return c.JSON(http.StatusInternalServerError, helper.ResponseSuccessNoData("success insert event"))
+		log.Print(err_bind)
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed bind data"))
 	}
+
+	layout_time := "2006-01-02T15:04"
+	DateTime, errDate := time.Parse(layout_time, event.Date)
+	if errDate != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed format date"))
+	}
+	event.DateTime = DateTime
 
 	fileData, fileInfo, fileErr := c.Request().FormFile("file")
 	if fileErr == http.ErrMissingFile || fileErr != nil {
@@ -125,6 +135,13 @@ func (h *EventHandler) UpdateData(c echo.Context) error {
 	if err_bind != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to bind data"))
 	}
+
+	layout_time := "2006-01-02T15:04"
+	DateTime, errDate := time.Parse(layout_time, eventReq.Date)
+	if errDate != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed format date"))
+	}
+	eventReq.DateTime = DateTime
 
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
