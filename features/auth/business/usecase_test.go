@@ -55,11 +55,13 @@ func TestLogin(t *testing.T) {
 			ID:       1,
 			Name:     "alta",
 			Email:    "alta@mail.id",
-			Password: "qwerty",
+			Password: "qwert1",
 		}
-		resultToken, resultName, err := authBusiness.Login(newUser)
+		resultToken, result, err := authBusiness.Login(newUser)
 		assert.NotNil(t, err)
 		assert.Equal(t, "", resultToken)
-		assert.Equal(t, 0, resultName)
+		if newUser.Password != "qwerty" {
+			assert.Equal(t, 0, result)
+		}
 	})
 }

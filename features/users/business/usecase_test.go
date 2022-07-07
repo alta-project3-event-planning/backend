@@ -11,11 +11,6 @@ import (
 //mock data success case
 type mockUserData struct{}
 
-// func (mock mockUserData) SelectData(limit, offset int) (data []users.Core, err error) {
-// 	return []users.Core{
-// 		{ID: 1, Name: "alta", Email: "alta@mail.id", Password: "qwerty"},
-// 	}, nil
-// }
 func (mock mockUserData) SelectDataById(id int) (data users.Core, err error) {
 	return users.Core{ID: 1, Name: "alta", Email: "alta@mail.id", Password: "qwerty"}, nil
 }
@@ -35,10 +30,6 @@ func (mock mockUserData) UpdateData(data map[string]interface{}, id int) (row in
 //mock data failed case
 type mockUserDataFailed struct{}
 
-// func (mock mockUserDataFailed) SelectData(limit, offset int) (data []users.Core, err error) {
-// 	return nil, fmt.Errorf("Failed to select data")
-// }
-
 func (mock mockUserDataFailed) SelectDataById(id int) (data users.Core, err error) {
 	return data, fmt.Errorf("Failed to select data")
 }
@@ -54,26 +45,6 @@ func (mock mockUserDataFailed) DeleteData(id int) (row int, err error) {
 func (mock mockUserDataFailed) UpdateData(data map[string]interface{}, id int) (row int, err error) {
 	return 0, fmt.Errorf("failed to update data ")
 }
-
-// func TestGetAllData(t *testing.T) {
-// 	t.Run("Test Get All Data Success", func(t *testing.T) {
-// 		limit := 10
-// 		offset := 0
-// 		userBusiness := NewUserBusiness(mockUserData{})
-// 		result, err := userBusiness.GetAllData(limit, offset)
-// 		assert.Nil(t, err)
-// 		assert.Equal(t, "alta", result[0].Name)
-// 	})
-
-// 	t.Run("Test Get All Data Failed", func(t *testing.T) {
-// 		limit := 0
-// 		offset := 0
-// 		userBusiness := NewUserBusiness(mockUserDataFailed{})
-// 		result, err := userBusiness.GetAllData(limit, offset)
-// 		assert.NotNil(t, err)
-// 		assert.Nil(t, result)
-// 	})
-// }
 
 func TestGetDataById(t *testing.T) {
 	t.Run("Test Get Data By Id", func(t *testing.T) {
@@ -152,6 +123,35 @@ func TestDeleteData(t *testing.T) {
 		id := 1
 		userBusiness := NewUserBusiness(mockUserDataFailed{})
 		result, err := userBusiness.DeleteData(id)
+		assert.NotNil(t, err)
+		assert.Equal(t, 0, result)
+	})
+}
+
+func TestUpdateData(t *testing.T) {
+	t.Run("Test Update Data", func(t *testing.T) {
+		id := 1
+		data := users.Core{
+			Name:     "Zaki",
+			URL:      "https://image.site",
+			Email:    "mail@mail.id",
+			Password: "Mail@",
+		}
+		userBusiness := NewUserBusiness(mockUserData{})
+		result, err := userBusiness.UpdateData(data, id)
+		assert.Nil(t, err)
+		assert.Equal(t, 1, result)
+	})
+	t.Run("Test Update Data Failed No data", func(t *testing.T) {
+		id := 3
+		data := users.Core{
+			Name:     "Zaki",
+			URL:      "https://image.site",
+			Email:    "mail@mail.id",
+			Password: "Mail@",
+		}
+		userBusiness := NewUserBusiness(mockUserDataFailed{})
+		result, err := userBusiness.UpdateData(data, id)
 		assert.NotNil(t, err)
 		assert.Equal(t, 0, result)
 	})
