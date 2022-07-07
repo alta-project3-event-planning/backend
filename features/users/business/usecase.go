@@ -56,11 +56,11 @@ func (uc *userUseCase) DeleteData(id int) (row int, err error) {
 
 func (uc *userUseCase) UpdateData(userReq users.Core, id int) (row int, err error) {
 	updateMap := make(map[string]interface{})
-	
+
 	if userReq.Name != "" {
 		updateMap["name"] = &userReq.Name
 	}
-	
+
 	if userReq.Email != "" {
 		updateMap["email"] = &userReq.Email
 	}
@@ -68,7 +68,7 @@ func (uc *userUseCase) UpdateData(userReq users.Core, id int) (row int, err erro
 	if userReq.Password != "" {
 		hash, err := bcrypt.GenerateFromPassword([]byte(userReq.Password), bcrypt.DefaultCost)
 		if err != nil {
-			return 0, errors.New("hasing password failed")
+			return -1, errors.New("hasing password failed")
 		}
 		updateMap["password"] = &hash
 	}

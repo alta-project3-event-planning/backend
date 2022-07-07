@@ -6,13 +6,14 @@ import (
 )
 
 type Event struct {
-	Name       string    `json:"name" form:"name"`
-	Detail     string    `json:"details" form:"details"`
-	HostedBy   string    `json:"hostedby" form:"hostedby"`
-	Performers string    `json:"performers" form:"performers"`
-	Date       time.Time `json:"date" form:"date"`
-	City       string    `json:"city" form:"city"`
-	Location   string    `json:"location" form:"location"`
+	Name       string `json:"name" form:"name"`
+	Detail     string `json:"details" form:"details"`
+	HostedBy   string `json:"hostedby" form:"hostedby"`
+	Performers string `json:"performers" form:"performers"`
+	Date       string `json:"date" form:"date"`
+	City       string `json:"city" form:"city"`
+	Location   string `json:"location" form:"location"`
+	DateTime   time.Time
 }
 
 func ToCore(eventReq Event) events.Core {
@@ -21,7 +22,7 @@ func ToCore(eventReq Event) events.Core {
 		EventDetail: eventReq.Detail,
 		HostedBy:    eventReq.HostedBy,
 		Performers:  eventReq.Performers,
-		Date:        eventReq.Date,
+		Date:        eventReq.DateTime,
 		City:        eventReq.City,
 		Location:    eventReq.Location,
 	}

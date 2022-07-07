@@ -24,39 +24,44 @@ func TestLogin(t *testing.T) {
 	t.Run("Test Login Success", func(t *testing.T) {
 		authBusiness := NewAuthBusiness(mockAuthDataSucsess{})
 		newUser := auth.Core{
+			ID:       1,
 			Name:     "alta",
 			Email:    "alta@mail.id",
 			Password: "123",
 		}
-		resultToken, resultName, err := authBusiness.Login(newUser)
+		resultToken, resultID, err := authBusiness.Login(newUser)
 		assert.Nil(t, err)
 		assert.NotNil(t, resultToken)
-		assert.Equal(t, "alta", resultName)
+		assert.Equal(t, 1, resultID)
 	})
 
 	t.Run("Test Login email not found", func(t *testing.T) {
 		authBusiness := NewAuthBusiness(mockAuthDataFailed{})
 		newUser := auth.Core{
+			ID:       1,
 			Name:     "alta",
 			Email:    "abc@mail.id",
 			Password: "123",
 		}
-		resultToken, resultName, err := authBusiness.Login(newUser)
+		resultToken, resultID, err := authBusiness.Login(newUser)
 		assert.NotNil(t, err)
 		assert.Equal(t, "", resultToken)
-		assert.Equal(t, "", resultName)
+		assert.Equal(t, 0, resultID)
 	})
 
 	t.Run("Test Login Wrong Pass", func(t *testing.T) {
 		authBusiness := NewAuthBusiness(mockAuthDataFailed{})
 		newUser := auth.Core{
+			ID:       1,
 			Name:     "alta",
 			Email:    "alta@mail.id",
-			Password: "qwerty",
+			Password: "qwert1",
 		}
-		resultToken, resultName, err := authBusiness.Login(newUser)
+		resultToken, result, err := authBusiness.Login(newUser)
 		assert.NotNil(t, err)
 		assert.Equal(t, "", resultToken)
-		assert.Equal(t, "", resultName)
+		if newUser.Password != "qwerty" {
+			assert.Equal(t, 0, result)
+		}
 	})
 }
