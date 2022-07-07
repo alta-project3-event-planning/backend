@@ -2,8 +2,8 @@ package data
 
 import (
 	"errors"
+	
 	"project3/eventapp/features/participants"
-
 	"gorm.io/gorm"
 )
 

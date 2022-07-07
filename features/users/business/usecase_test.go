@@ -12,7 +12,13 @@ import (
 type mockUserData struct{}
 
 func (mock mockUserData) SelectDataById(id int) (data users.Core, err error) {
-	return users.Core{ID: 1, Name: "alta", Email: "alta@mail.id", Password: "qwerty"}, nil
+	return users.Core{
+		ID:       1,
+		Name:     "alta",
+		Email:    "alta@mail.id",
+		Password: "qwerty",
+		URL:      "example.com",
+	}, nil
 }
 
 func (mock mockUserData) InsertData(data users.Core) (row int, err error) {
@@ -70,6 +76,7 @@ func TestInsertData(t *testing.T) {
 			Name:     "alta",
 			Email:    "alta@mail.id",
 			Password: "qwerty",
+			URL:      "example.com",
 		}
 		result, err := userBusiness.InsertData(newUser)
 		assert.Nil(t, err)

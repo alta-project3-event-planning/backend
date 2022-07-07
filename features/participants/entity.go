@@ -1,6 +1,8 @@
 package participants
 
-import "time"
+import (
+	"time"
+)
 
 type Core struct {
 	ID        int
