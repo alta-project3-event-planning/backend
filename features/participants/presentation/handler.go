@@ -1,14 +1,13 @@
 package presentation
 
 import (
-	"fmt"
 	"net/http"
+	"strconv"
+	"project3/eventapp/helper"
+	"project3/eventapp/middlewares"
 	"project3/eventapp/features/participants"
 	_request_participant "project3/eventapp/features/participants/presentation/request"
 	_response_participant "project3/eventapp/features/participants/presentation/response"
-	"project3/eventapp/helper"
-	"project3/eventapp/middlewares"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -40,7 +39,6 @@ func (h *ParticipantHandler) Joined(c echo.Context) error {
 
 	err := h.participantBusiness.AddParticipant(participantCore)
 	if err != nil {
-		fmt.Println(err)
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed join"))
 	}
 	return c.JSON(http.StatusOK, helper.ResponseSuccessNoData("success join"))
