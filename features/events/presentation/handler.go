@@ -65,7 +65,7 @@ func (h *EventHandler) InsertData(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed bind data"))
 	}
 
-	layout_time := "2006-01-02 15:04:05"
+	layout_time := "2006-01-02T15:04"
 	DateTime, errDate := time.Parse(layout_time, event.Date)
 	if errDate != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed format date"))
@@ -133,6 +133,13 @@ func (h *EventHandler) UpdateData(c echo.Context) error {
 	if err_bind != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to bind data"))
 	}
+
+	layout_time := "2006-01-02T15:04"
+	DateTime, errDate := time.Parse(layout_time, eventReq.Date)
+	if errDate != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed format date"))
+	}
+	eventReq.DateTime = DateTime
 
 	userID_token, errToken := middlewares.ExtractToken(c)
 	if userID_token == 0 || errToken != nil {
