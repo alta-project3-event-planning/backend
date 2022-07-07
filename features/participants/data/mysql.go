@@ -2,8 +2,9 @@ package data
 
 import (
 	"errors"
-	
+
 	"project3/eventapp/features/participants"
+
 	"gorm.io/gorm"
 )
 
@@ -38,12 +39,11 @@ func (repo *mysqlParticipantRepository) AddData(ParticipantData participants.Cor
 	Model := fromCore(ParticipantData)
 
 	//	Check jika user telah join di event yang sama
-	// var check int
-	// checkJoin := repo.db.Select("event_id").Find(&Participant{}).Scan(&check)
-	// fmt.Println(check)
-	// if check == ParticipantData.EventID {
-	// 	return che
-	// }
+	var check int
+	checkJoin := repo.db.Select("event_id").Find(&Participant{}).Scan(&check)
+	if check == ParticipantData.EventID {
+		return checkJoin.AddError(errors.New("failed"))
+	}
 
 	result := repo.db.Create(&Model)
 	if result.Error != nil {
